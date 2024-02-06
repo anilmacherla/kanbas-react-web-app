@@ -1,13 +1,13 @@
 .list-group.assignment-list {
     border-radius: 0px;
-    ;
 }
 
 .list-group-item.assignment-list-item {
-    padding: 15px;
-    border-left: 5px solid green;
     display: flex;
     align-items: center;
+    padding: 15px;
+    border-left: 5px solid green;
+
 }
 
 .btn-rad {

@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="/Kanbas/Courses/Home/index.css" />
     <link rel="stylesheet" href="/Kanbas/Courses/Assignments/index.css" />
     <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.2/css/all.css" rel="stylesheet" />
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -38,11 +39,11 @@
         </div>
 
         <div class="d-block" style="flex-grow: 1;">
-            <div class="navbar" style="margin: 10px 10px -30px 10px;">
-                <div class="d-flex">
-                    <i class="fa fa-bars fa-2x" style="padding: 10px; color:red"></i>
-                    <nav aria-label="breadcrumb" style="--bs-breadcrumb-divider: '>'; padding: 15px;font-size: large;">
-                        <ol class="breadcrumb">
+            <div class="navbar mx-2 my-0 mt-3">
+                <div class="d-flex px-2">
+                    <i class="fa fa-bars fa-2x" style="color:red"></i>
+                    <nav class="" aria-label="breadcrumb" style="--bs-breadcrumb-divider: '>'; font-size: large;">
+                        <ol class="breadcrumb px-2">
                             <li class="breadcrumb-item"><a style="color: red;
     text-decoration: none;" href="/Kanbas/Courses/Home/screen.html">CS5610.1174.202310</a></li>
                             <li class="breadcrumb-item active" aria-current="page">Assignments</li>
@@ -50,13 +51,13 @@
                     </nav>
 
                 </div>
-                <button class="btn btn-primary btn-rad btn-grey-button" style="margin-right: 15px;">
+                <button class="btn btn-secondary btn-rad btn-grey-button mr-3">
                     <i class="fa fa-glasses"></i> Student View</button>
             </div>
-            <hr style="margin-left: 20px;" />
+            <hr />
 
             <div class="d-flex">
-                <div class=" d-none d-md-block" style="padding: 10px;">
+                <div class=" d-none d-md-block p-2">
                     <ul class="wd-navigation" style="width: 180px;">
                         <label style="font-size: smaller; color: gray;font-style: italic;"> &nbsp;202310_2
                             Fall20....</label>
@@ -83,7 +84,7 @@
                     </ul>
                 </div>
 
-                <div class="d-flex" style=" flex-direction: column; flex-grow: 1;margin-right: 20px;">
+                <div class="d-flex mx-4" style=" flex-direction: column; flex-grow: 1;">
                     <div style="display: flex; justify-content: space-between; align-items: center;">
                         <input type="text" class="form-control w-25 btn-rad" placeholder="Search for Assignment">
                         <div>
@@ -97,7 +98,7 @@
                     </div>
                     <hr>
                     <div>
-                        <div class="modules-list">
+                        <div class="">
                             <ul class="list-group assignment-list">
                                 <li class="list-group-item list-group-item-secondary"
                                     style="display: flex; justify-content: space-between;">

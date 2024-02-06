@@ -1,0 +1,5 @@
+.assign-border {
+    border: 1px solid;
+    border-color: lightgray;
+    border-radius: 0.2rem;
+}
