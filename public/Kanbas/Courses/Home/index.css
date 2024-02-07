@@ -166,3 +166,12 @@
     color: grey;
     padding-left: 5px;
 }
+
+.sub-text {
+    font-size: smaller;
+    color: grey;
+}
+
+.btn {
+    border-radius: 0.2rem;
+}

@@ -1,6 +1,7 @@
 .dashboard-flex-container {
     display: flex;
     flex-direction: row;
+    height: 100%;
 }
 
 .card-title,
@@ -8,4 +9,8 @@
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+}
+
+.card-title {
+    color: rgb(69, 152, 184);
 }
