@@ -1,0 +1,177 @@
+.wd-modules,
+.wd-modules * {
+    border-radius: 0%;
+    border: none;
+    margin: 0px;
+    padding: 0px;
+    font-weight: bold;
+}
+
+.wd-modules {
+    margin: 5px;
+}
+
+.wd-modules>li {
+    background-color: lightgray;
+    border: 1px solid gray !important;
+    border-left: none !important;
+}
+
+.wd-modules>li>div {
+    padding: 6px;
+    border-left: 1px solid gray !important;
+}
+
+.wd-modules>li>ul>li {
+    padding: 5px;
+    border-top: 1px solid gray !important;
+    border-left: 2px solid green;
+}
+
+.wd-modules>li {
+    margin-bottom: 20px;
+}
+
+.wd-modules>li>ul>li>span.module-title {
+    padding-left: 30px;
+}
+
+.wd-modules>li>ul>li>span.main-title {
+    padding-left: 5px;
+}
+
+.module-button {
+    background-color: lightgrey;
+    color: black;
+    border-color: lightgray;
+    margin-right: 5px;
+    border-radius: 5%;
+    text-wrap: nowrap;
+}
+
+.button-group {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 3px;
+    flex-wrap: wrap;
+}
+
+.course-home-col {
+    padding: 5px;
+}
+
+.button-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.button-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.button-column button,
+.button-row button {
+    margin-bottom: 5px;
+    width: 100%;
+    background-color: lightgray;
+    color: black;
+    border-color: lightgray;
+    text-align: left;
+}
+
+#publish-button {
+    color: white;
+    background-color: green;
+    border-color: lightslategrey;
+}
+
+.coming-up h5 {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    margin-bottom: -10px;
+}
+
+.coming-up ul h5 a {
+    color: rgb(211, 14, 14);
+    text-decoration: none;
+    font-size: smaller;
+    font-weight: lighter;
+}
+
+.coming-up ul li a {
+    color: rgb(211, 14, 14);
+    text-decoration: none;
+    font-size: medium;
+    font-weight: lighter;
+}
+
+.kanbas-collapse-nav {
+    background-color: white;
+    border-color: white;
+    color: red;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    max-width: 767px;
+    height: 100%;
+    z-index: 10;
+}
+
+.kanbas-collapse-nav>ul>li>a {
+    text-decoration: none;
+    font-size: medium;
+    color: red;
+}
+
+.kanbas-collapse-nav>ul>li {
+    padding: 10px;
+}
+
+.navbar .navbar-toggler {
+    border: none;
+}
+
+.course-collapse-nav {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+}
+
+#courseNavigation>ul>li>a {
+    margin-left: 5px;
+    text-decoration: none;
+    font-size: medium;
+    color: red;
+    background-color: white;
+}
+
+.course-active {
+    font-weight: bold;
+}
+
+.wd-navigation li {
+    padding-bottom: 0px;
+}
+
+.wd-navigation {
+    margin-left: 10px;
+}
+
+.eye-lash-icon {
+    color: grey;
+    padding-left: 5px;
+}
+
+.sub-text {
+    font-size: smaller;
+    color: grey;
+}
+
+.btn {
+    border-radius: 0.2rem;
+}
