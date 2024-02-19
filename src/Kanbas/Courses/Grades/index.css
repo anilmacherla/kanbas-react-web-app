@@ -1,0 +1,19 @@
+th,
+td {
+    text-align: center;
+}
+
+.selected-cell {
+    border: 2px solid skyblue !important;
+}
+
+input.form-control:focus {
+    border-color: #FF0000;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(255, 0, 0, 0.6);
+}
+
+input.form-control {
+    width: 70%;
+    border-color: #FF0000;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(255, 0, 0, 0.6);
+}

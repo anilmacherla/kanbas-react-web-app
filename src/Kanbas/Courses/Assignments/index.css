@@ -1,0 +1,50 @@
+.list-group.assignment-list {
+    border-radius: 0px;
+}
+
+.list-group-item.assignment-list-item {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border-left: 5px solid green;
+
+}
+
+.btn-rad {
+    border-radius: 0.2rem;
+}
+
+.green-icon {
+    color: green;
+}
+
+.assignment-title {
+    color: black;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.subtitle-text {
+    font-size: small;
+    color: grey;
+}
+
+.font-weight-bold {
+    font-weight: bold;
+    display: inline;
+}
+
+.flex-grow {
+    flex-grow: 1;
+}
+
+.flex-no-wrap {
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+.btn-grey-button {
+    background-color: lightgray;
+    color: black;
+    border-color: white;
+}
