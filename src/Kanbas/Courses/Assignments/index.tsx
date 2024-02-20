@@ -10,7 +10,7 @@ function Assignments() {
         <>
             { }
             <div style={{ display: "flex", justifyContent: "space-between" }}>
-                <input type="text" className="form-control w-25 btn-rad" placeholder="Search for Assignment" />
+                <input type="text" className="mx-2 w-25 btn-rad" placeholder="Search for Assignment" />
                 <div>
                     <button className="btn btn-secondary btn-rad btn-grey-button" style={{ borderRadius: "0.2rem" }}><FaPlus />
                         Group</button>

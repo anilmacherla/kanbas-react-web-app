@@ -1,5 +1,5 @@
 import { courses } from "../../Kanbas/Database";
-import { Navigate, Route, Routes, useLocation, useParams } from "react-router-dom";
+import { Link, Navigate, Route, Routes, useLocation, useParams } from "react-router-dom";
 import { HiMiniBars3 } from "react-icons/hi2";
 import CourseNavigation from "./Navigation";
 import Modules from "./Modules";
@@ -7,6 +7,7 @@ import Home from "./Home";
 import Assignments from "./Assignments";
 import AssignmentEditor from "./Assignments/Editor";
 import Grades from "./Grades";
+import { FaGlasses } from "react-icons/fa";
 function Courses() {
     const { courseId } = useParams();
     const getPageName = (path: string) => {
@@ -14,10 +15,37 @@ function Courses() {
         return parts[parts.length - 1];
     };
     const { pathname } = useLocation();
+
     const course = courses.find((course) => course._id === courseId);
     return (
         <div className=" m-2">
-            <h1 ><HiMiniBars3 /> <a className="text-decoration-none text-danger" href="/">Course {course?.name}</a> {">"} {getPageName(pathname)}</h1> <hr />
+            <h3 className="d-flex justify-content-between">
+                <div>
+                    < HiMiniBars3 className="mx-2" />
+                    <Link className="text-decoration-none text-danger" to={`/Kanbas/Courses/${course?._id}/Home`}>Course {course?.name}</Link>
+                    {
+
+                        pathname.includes("/Assignments/") ? (
+                            <span>
+                                {">"} Assignments  {">"} <Link className="text-decoration-none text-danger" to={pathname}>{getPageName(pathname)}</Link>
+                            </span>
+                        ) : (
+                            <span>
+                                {">"} {getPageName(pathname)}
+                            </span>
+                        )}
+
+                </div>
+                <div>
+                    {getPageName(pathname) === "Modules" &&
+                        <button className="btn btn-secondary mt-2 mr-3 float-end">
+                            <FaGlasses /> Student View</button>}
+
+                </div>
+
+
+            </h3>
+            <hr />
             <div className="d-flex">
                 <div className="flex-grow-0 d-none d-md-block">
                     <CourseNavigation />
@@ -31,10 +59,11 @@ function Courses() {
                             <Route path="Home" element={<Home />} />
                             <Route path="Modules" element={<Modules />} />
                             <Route path="Piazza" element={<h1>Piazza</h1>} />
-                            <Route path="Piazza" element={<h1>Zoom Meetings</h1>} />
+                            <Route path="ZoomMeetings" element={<h1>Zoom Meetings</h1>} />
                             <Route path="Assignments" element={<Assignments />} />
                             <Route path="Assignments/:assignmentId" element={<AssignmentEditor />} />
                             <Route path="Grades" element={<Grades />} />
+                            <Route path="People" element={<h1>People</h1>} />
                         </Routes>
                     </div>
                 </div>

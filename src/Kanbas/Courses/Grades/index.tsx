@@ -1,4 +1,4 @@
-import { FaCaretDown, FaCog, FaDownload, FaFileExport, FaSearch, FaSquare } from "react-icons/fa";
+import { FaCaretDown, FaCog, FaDownload, FaFileExport, FaKeyboard, FaSearch, FaSquare } from "react-icons/fa";
 import { assignments, enrollments, grades, users } from "../../Database";
 import { useLocation, useParams } from "react-router-dom";
 import './index.css'
@@ -10,7 +10,12 @@ function Grades() {
     return (
         <div className="m-2 p-2">
             <div className="row">
+
                 <div className="mb-4">
+                    <h5 className=" float-start mx-2 text-danger col-sm-5">Gradebook <FaCaretDown />
+                        <FaKeyboard className="float-end" />
+                    </h5>
+
                     <button type="button" className="btn btn-secondary btn-grey-button float-end mx-2">
                         <FaCog /></button>
                     <button type="button" className="btn btn-secondary btn-grey-button float-end mx-2">

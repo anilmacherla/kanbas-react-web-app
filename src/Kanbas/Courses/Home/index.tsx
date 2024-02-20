@@ -1,4 +1,4 @@
-import { FaArrowAltCircleRight, FaBan, FaBullhorn, FaChartBar, FaCheckCircle, FaCrosshairs, FaDownload, FaRegBell } from "react-icons/fa";
+import { FaArrowAltCircleRight, FaBan, FaBullhorn, FaChartBar, FaCheckCircle, FaCrosshairs, FaDownload, FaRegBell, FaRegWindowClose, FaWindowClose } from "react-icons/fa";
 import ModuleList from "../Modules/List";
 import { Link } from "react-router-dom";
 
@@ -60,6 +60,7 @@ function Home() {
                             <div>
                                 <ul className="list-group list-group-flush">
                                     <h5>To Do <Link className="float-end" to={""} />
+                                        <label className="text-muted">X</label>
                                     </h5>
                                     <hr />
                                     <li className="list-group-item"><a href="#"><i

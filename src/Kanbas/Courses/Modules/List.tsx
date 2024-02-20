@@ -44,7 +44,7 @@ function ModuleList() {
                 </div>
 
             </div>
-            <ul className="list-group wd-modules">
+            <ul className="list-group wd-modules rounded-0">
                 {modulesList.map((module) => (
                     <li
                         className="list-group-item"
@@ -59,7 +59,7 @@ function ModuleList() {
                             </span>
                         </div>
                         {selectedModule._id === module._id && (
-                            <ul className="list-group">
+                            <ul className="list-group rounded-0">
                                 {module.lessons?.map((lesson) => (
                                     <li className="list-group-item">
                                         <FaEllipsisV className="me-2" />
