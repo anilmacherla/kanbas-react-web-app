@@ -8,7 +8,7 @@ import Assignments from "./Assignments";
 import AssignmentEditor from "./Assignments/Editor";
 import Grades from "./Grades";
 import { FaGlasses } from "react-icons/fa";
-function Courses() {
+function Courses({ courses }: { courses: any[]; }) {
     const { courseId } = useParams();
     const getPageName = (path: string) => {
         const parts = path.split('/');
