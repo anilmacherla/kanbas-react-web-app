@@ -6,8 +6,7 @@
         "startDate": "2023-01-10",
         "endDate": "2023-05-15",
         "image": "blue.jpeg",
-        "subText1": "CS4550.12631.202410",
-        "subText2": " 202340_2_Summer 1 2023 Semester"
+        "subText1": " 202340_2_Summer 1 2023 Semester"
     },
     {
         "_id": "RS102",
@@ -16,8 +15,7 @@
         "startDate": "2023-01-10",
         "endDate": "2023-05-15",
         "image": "blue.jpeg",
-        "subText1": "CS6550.12631.202410",
-        "subText2": "202340_2_Summer 1 2023 Semester"
+        "subText1": "202340_2_Summer 1 2023 Semester"
     },
     {
         "_id": "RS103",
@@ -26,7 +24,6 @@
         "startDate": "2023-01-10",
         "endDate": "2023-05-15",
         "image": "blue.jpeg",
-        "subText1": "CS7550.12631.202410",
-        "subText2": "202340_2_Summer 1 2023 Semester"
+        "subText1": "202340_2_Summer 1 2023 Semester"
     }
 ]
