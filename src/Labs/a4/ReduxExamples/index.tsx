@@ -11,7 +11,6 @@ const ReduxExamples = () => {
             <HelloRedux />
             <CounterRedux />
             <AddRedux />
-            <TodoList />
         </div>
     );
 };
