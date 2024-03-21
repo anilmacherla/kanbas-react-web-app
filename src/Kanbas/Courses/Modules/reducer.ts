@@ -4,7 +4,7 @@ import { modules } from "../../Database";
 
 const initialState = {
     modules: modules,
-    module: { name: "New Module 123", description: "New Description" },
+    module: { _id: "0", name: "New Module 123", description: "New Description", course: "0" },
 };
 
 
@@ -24,11 +24,13 @@ const modulesSlice = createSlice({
             );
         },
         updateModule: (state, action) => {
-            state.modules = state.modules.map((module) => {
-                if (module._id === action.payload._id) {
+            console.log("in update method:", action.payload)
+            state.modules = state.modules.map((m) => {
+                if (m._id === action.payload._id) {
+                    console.log("first")
                     return action.payload;
                 } else {
-                    return module;
+                    return m;
                 }
             });
         },

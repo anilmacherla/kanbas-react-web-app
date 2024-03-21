@@ -1,15 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import { FaCaretDown, FaCheckCircle, FaEllipsisV, FaPenSquare, FaPlus, FaPlusCircle } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { KanbasState } from "../../store";
 import { addAssignment, deleteAssignment, selectAssignment, setAssignment, updateAssignment } from "./assignmentsReducer";
+import Popup from "../../Miscellaneous/Popup";
 
 function Assignments() {
     const { courseId } = useParams();
     const assignments = useSelector((state: KanbasState) => state.assignmentsReducer.assignments);
     const assignment = useSelector((state: KanbasState) => state.assignmentsReducer.assignment);
+    const [showConfirmDialog, setShowConfirmDialog] = useState(false);
     const dispatch = useDispatch();
+
     return (
         <>
             { }
@@ -43,26 +46,57 @@ function Assignments() {
                     <ul className="list-group assignment-list">
                         {assignments
                             .filter((assignment) => assignment.course === courseId)
-                            .map((assignment) => (
-                                <li className="list-group-item assignment-list-item ">
-                                    <div className="d-flex align-items-center justify-content-between ">
+                            .map((a) => (
+                                <li key={a._id} className="list-group-item assignment-list-item">
+                                    <div className="d-flex align-items-center justify-content-between">
                                         <div>
                                             <FaEllipsisV className="me-1" />
                                             <FaPenSquare className="text-success mx-2" />
-                                            <Link className="text-decoration-none text-dark" to={`/Kanbas/Courses/${courseId}/Assignments/${assignment._id}`}>
-                                                {assignment.title}
+                                            <Link
+                                                className="text-decoration-none text-dark"
+                                                onClick={() => {
+                                                    dispatch(setAssignment({ title: a.title, course: courseId }));
+                                                }}
+                                                to={`/Kanbas/Courses/${courseId}/Assignments/${a._id}`}
+                                            >
+                                                {a.title}
                                             </Link>
                                             <div className="mx-5" style={{ fontSize: "small" }}>
-                                                <a href="" className="text-decoration-none text-danger">Multiple Modules</a> | Not available yet | 100 points
+                                                <a className="text-decoration-none text-danger">Multiple Modules</a> | Not available yet | 100 points
                                             </div>
                                         </div>
                                         <div className="text-end">
                                             <FaCheckCircle className="text-success" />
                                             <FaEllipsisV className="ms-2" />
+                                            <button
+                                                className="mx-1 btn btn-sm btn-danger"
+                                                onClick={() => {
+                                                    // Set the assignment for deletion
+                                                    dispatch(setAssignment({ ...a, course: courseId }));
+                                                    setShowConfirmDialog(true);
+                                                }}
+                                            >
+                                                Delete
+                                            </button>
+                                            {showConfirmDialog && (
+                                                <Popup
+                                                    message="Are you sure you want to delete this assignment?"
+                                                    onNoClick={() => setShowConfirmDialog(false)}
+                                                    onDeleteClick={() => {
+                                                        console.log("Assignment:", assignment);
+                                                        // Delete the assignment using the assignment ID
+                                                        dispatch(deleteAssignment(assignment._id));
+                                                        setShowConfirmDialog(false);
+                                                    }}
+                                                />
+                                            )}
                                         </div>
                                     </div>
-                                </li>))}
+                                </li>
+                            ))}
                     </ul>
+
+
                 </li>
             </ul>
         </>

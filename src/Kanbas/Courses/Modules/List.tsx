@@ -72,7 +72,7 @@ function ModuleList() {
                             </div>
                             <div className="col">
                                 <button className="btn btn-success m-1 btn-sm float-end" onClick={() => dispatch(addModule({ ...module, course: courseId }))}>Add</button>
-                                <button className="btn btn-primary m-1 btn-sm float-end" onClick={() => dispatch(updateModule(module))}>
+                                <button className="btn btn-primary m-1 btn-sm float-end" onClick={() => { console.log("In Update button", module); dispatch(updateModule({ ...module, course: courseId })); }}>
                                     Update
                                 </button>
 
@@ -83,34 +83,34 @@ function ModuleList() {
                 </li>
 
                 {moduleList
-                    .filter((module) => module.course === courseId)
-                    .map((module, index) => (
+                    .filter((m) => m.course === courseId)
+                    .map((m, index) => (
                         <li key={index}
                             className="list-group-item"
-                            onClick={() => setSelectedModule(module)}>
+                            onClick={() => setSelectedModule(m)}>
                             <button className="btn btn-success btn-sm float-end mx-1"
-                                onClick={(event) => { setModule(module); }}>
+                                onClick={() => { dispatch(setModule({ ...module, _id: m._id, name: m.name, description: m.description })); }}>
                                 Edit
                             </button>
 
 
                             <button className="btn btn-danger btn-sm float-end"
-                                onClick={() => dispatch(deleteModule(module._id))}>
+                                onClick={() => { console.log("module", m); dispatch(deleteModule(m._id)) }}>
                                 Delete
                             </button>
 
                             <div>
                                 <FaEllipsisV className="me-2" />
-                                {module.name}
+                                {m.name}
                                 <span className="float-end">
                                     <FaCheckCircle className="text-success" />
                                     <FaPlusCircle className="ms-2" />
                                     <FaEllipsisV className="ms-2" />
                                 </span>
                             </div>
-                            {selectedModule._id === module._id && (
+                            {selectedModule._id === m._id && (
                                 <ul className="list-group rounded-0">
-                                    {module.lessons?.map((lesson: { name: string }) => (
+                                    {m.lessons?.map((lesson: { name: string }) => (
                                         <li className="list-group-item">
                                             <FaEllipsisV className="me-2" />
                                             {lesson.name}

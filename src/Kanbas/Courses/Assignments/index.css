@@ -48,3 +48,7 @@
     color: black;
     border-color: white;
 }
+
+.border-black {
+    border-color: grey;
+}
