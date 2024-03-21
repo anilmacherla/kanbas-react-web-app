@@ -27,7 +27,6 @@ const modulesSlice = createSlice({
             console.log("in update method:", action.payload)
             state.modules = state.modules.map((m) => {
                 if (m._id === action.payload._id) {
-                    console.log("first")
                     return action.payload;
                 } else {
                     return m;

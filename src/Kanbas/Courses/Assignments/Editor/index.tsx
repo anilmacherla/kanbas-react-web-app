@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 function AssignmentEditor() {
     const { assignmentId } = useParams();
     const dispatch = useDispatch();
-    const assignment: { title: string, _id: string, course: string } = useSelector((state: KanbasState) => state.assignmentsReducer.assignment);
+    const assignment = useSelector((state: KanbasState) => state.assignmentsReducer.assignment);
     const { courseId } = useParams();
     const navigate = useNavigate();
     const shouldCreate = useLocation().pathname.includes("Create");
@@ -30,13 +30,13 @@ function AssignmentEditor() {
                 <h3>Assignment Name</h3>
                 <div className="w-75">
                     <input value={assignment?.title} onChange={(e) => dispatch(setAssignment({ ...assignment, title: e.target.value }))} className="form-control w-75 mb-3 border-black" />
-                    <textarea value="New Description" className="form-control w-75 border-black" />
+                    <textarea value={assignment?.description} onChange={(e) => dispatch(setAssignment({ ...assignment, description: e.target.value }))} className="form-control w-75 border-black" />
                     <div className="row mt-2">
                         <div className="col-3">
                             <label htmlFor="" className="float-end">Points</label>
                         </div>
                         <div className="col-8 mx-1">
-                            <input value="100" className="form-control border-black" />
+                            <input value={assignment?.points} onChange={(e) => dispatch(setAssignment({ ...assignment, points: e.target.value }))} className="form-control border-black" />
                         </div>
                     </div>
 
@@ -47,20 +47,20 @@ function AssignmentEditor() {
                         <div className="card col-5 mx-3 p-4">
                             <div className="flex">
                                 <div style={{ fontWeight: "bold" }}>Due</div>
-                                <input value="2021-12-11" type="date" className="form-control w-100 border-black" />
+                                <input value={assignment?.dueDate} onChange={(e) => dispatch(setAssignment({ ...assignment, dueDate: e.target.value }))} type="date" className="form-control w-100 border-black" />
                             </div>
 
                             <div className="flex">
                                 <div className="row mt-2">
                                     <div className="col-6">
                                         <div style={{ fontWeight: "bold" }}>Available from</div>
-                                        <input type="date" value="2021-12-11" className="form-control w-100 border-black" >
+                                        <input type="date" value={assignment?.availableFrom} onChange={(e) => dispatch(setAssignment({ ...assignment, availableFrom: e.target.value }))} className="form-control w-100 border-black" >
 
                                         </input>
                                     </div>
                                     <div className="col-6">
                                         <div style={{ fontWeight: "bold" }}>Until</div>
-                                        <input type="date" value="2021-12-12" className="form-control w-100 border-black" />
+                                        <input type="date" value={assignment?.untilDate} onChange={(e) => dispatch(setAssignment({ ...assignment, untilDate: e.target.value }))} className="form-control w-100 border-black" />
                                     </div>
                                 </div>
                             </div>

@@ -45,7 +45,7 @@ function Assignments() {
                     </div>
                     <ul className="list-group assignment-list">
                         {assignments
-                            .filter((assignment) => assignment.course === courseId)
+                            .filter((a) => a.course === courseId)
                             .map((a) => (
                                 <li key={a._id} className="list-group-item assignment-list-item">
                                     <div className="d-flex align-items-center justify-content-between">
@@ -55,7 +55,7 @@ function Assignments() {
                                             <Link
                                                 className="text-decoration-none text-dark"
                                                 onClick={() => {
-                                                    dispatch(setAssignment({ title: a.title, course: courseId }));
+                                                    dispatch(setAssignment({ ...a, title: a.title, course: courseId }));
                                                 }}
                                                 to={`/Kanbas/Courses/${courseId}/Assignments/${a._id}`}
                                             >
@@ -83,8 +83,6 @@ function Assignments() {
                                                     message="Are you sure you want to delete this assignment?"
                                                     onNoClick={() => setShowConfirmDialog(false)}
                                                     onDeleteClick={() => {
-                                                        console.log("Assignment:", assignment);
-                                                        // Delete the assignment using the assignment ID
                                                         dispatch(deleteAssignment(assignment._id));
                                                         setShowConfirmDialog(false);
                                                     }}
