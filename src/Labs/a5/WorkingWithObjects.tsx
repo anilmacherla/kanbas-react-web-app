@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 function WorkingWithObjects() {
     const [assignment, setAssignment] = useState({
         id: 1, title: "NodeJS Assignment",
@@ -8,6 +9,18 @@ function WorkingWithObjects() {
     const [module, setModule] = useState({
         id: 1, name: "NodeJS Module", description: "NodeJS and ExpressJS", course: "CS572",
     });
+    const fetchAssignment = async () => {
+        const response = await axios.get(`${ASSIGNMENT_URL}`);
+        setAssignment(response.data);
+    };
+    const updateTitle = async () => {
+        const response = await axios
+            .get(`${ASSIGNMENT_URL}/title/${assignment.title}`);
+        setAssignment(response.data);
+    };
+    useEffect(() => {
+        fetchAssignment();
+    }, []);
 
 
     const ASSIGNMENT_URL = "http://localhost:4000/a5/assignment"
@@ -23,6 +36,17 @@ function WorkingWithObjects() {
                 </a>
             </div>
             <h4>Retrieving Properties</h4>
+            <h3>Modifying Properties</h3>
+            <input onChange={(e) => setAssignment({
+                ...assignment, title: e.target.value
+            })}
+                value={assignment.title} type="text" />
+            <button className="btn btn-primary mx-1" onClick={updateTitle} >
+                Update Title to: {assignment.title}
+            </button>
+            <button className="btn btn-primary mx-1" onClick={fetchAssignment} >
+                Fetch Assignment
+            </button>
 
             <div className="btn btn-primary">
                 <a href="http://localhost:4000/a5/assignment/title" className="text-white text-decoration-none">
