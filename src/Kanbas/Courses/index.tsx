@@ -8,15 +8,28 @@ import Assignments from "./Assignments";
 import AssignmentEditor from "./Assignments/Editor";
 import Grades from "./Grades";
 import { FaGlasses } from "react-icons/fa";
+import { useState, useEffect } from "react";
+import axios from "axios";
 function Courses({ courses }: { courses: any[]; }) {
+    const COURSES_API = "http://localhost:4000/api/courses";
+
     const { courseId } = useParams();
     const getPageName = (path: string) => {
         const parts = path.split('/');
         return parts[parts.length - 1];
     };
     const { pathname } = useLocation();
+    const [course, setCourse] = useState<any>({ _id: "" });
+    const findCourseById = async (courseId?: string) => {
+        const response = await axios.get(
+            `${COURSES_API}/${courseId}`
+        );
+        setCourse(response.data);
+    };
+    useEffect(() => {
+        findCourseById(courseId);
+    }, [courseId]);
 
-    const course = courses.find((course) => course._id === courseId);
     return (
         <div className=" m-2">
             <h3 className="d-flex justify-content-between">
