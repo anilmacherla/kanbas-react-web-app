@@ -1,17 +1,32 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaCaretDown, FaCheckCircle, FaEllipsisV, FaPenSquare, FaPlus, FaPlusCircle } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { KanbasState } from "../../store";
-import { addAssignment, deleteAssignment, selectAssignment, setAssignment, updateAssignment } from "./assignmentsReducer";
+import { deleteAssignment, setAssignment, setAssignments } from "./assignmentsReducer";
 import Popup from "../../Miscellaneous/Popup";
+import { findAssignmentsForCourse, deleteAssignmentForCourse } from "./assignmentsService";
+
 
 function Assignments() {
     const { courseId } = useParams();
+    const dispatch = useDispatch();
+
     const assignments = useSelector((state: KanbasState) => state.assignmentsReducer.assignments);
     const assignment = useSelector((state: KanbasState) => state.assignmentsReducer.assignment);
+    useEffect(() => {
+        findAssignmentsForCourse(courseId)
+            .then((assignments) =>
+                dispatch(setAssignments(assignments))
+            );
+    }, [courseId, dispatch]);
+
     const [showConfirmDialog, setShowConfirmDialog] = useState(false);
-    const dispatch = useDispatch();
+    const handleDeleteModule = (moduleId: string) => {
+        deleteAssignmentForCourse(moduleId).then((status) => {
+            dispatch(deleteAssignment(moduleId));
+        });
+    };
 
     return (
         <>
@@ -83,7 +98,7 @@ function Assignments() {
                                                     message="Are you sure you want to delete this assignment?"
                                                     onNoClick={() => setShowConfirmDialog(false)}
                                                     onDeleteClick={() => {
-                                                        dispatch(deleteAssignment(assignment._id));
+                                                        handleDeleteModule(assignment._id);
                                                         setShowConfirmDialog(false);
                                                     }}
                                                 />

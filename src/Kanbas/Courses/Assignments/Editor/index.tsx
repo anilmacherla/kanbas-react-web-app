@@ -1,10 +1,9 @@
-import React from "react";
 import { useNavigate, useParams, Link, useLocation } from "react-router-dom";
-import { assignments } from "../../../Database";
-import { FaCalendar, FaCheckCircle, FaEllipsisV } from "react-icons/fa";
+import { FaCheckCircle, FaEllipsisV } from "react-icons/fa";
 import { KanbasState } from "../../../store";
-import { addAssignment, deleteAssignment, selectAssignment, setAssignment, updateAssignment } from "../assignmentsReducer";
+import { addAssignment, setAssignment, updateAssignment } from "../assignmentsReducer";
 import { useDispatch, useSelector } from "react-redux";
+import { createAssignment, updateAssignmentForCourse } from "../assignmentsService";
 
 function AssignmentEditor() {
     const { assignmentId } = useParams();
@@ -14,10 +13,22 @@ function AssignmentEditor() {
     const navigate = useNavigate();
     const shouldCreate = useLocation().pathname.includes("Create");
     const handleSave = () => {
-        console.log("assignment:", assignment)
-        shouldCreate ? dispatch(addAssignment({ ...assignment, course: courseId })) : dispatch(updateAssignment({ ...assignment, _id: assignmentId }));
+        shouldCreate ? handleAddAssignment() : handleUpdateAssignment();
         navigate(`/Kanbas/Courses/${courseId}/Assignments`);
     };
+
+    const handleAddAssignment = () => {
+        createAssignment(courseId, assignment).then((assignment) => {
+            dispatch(addAssignment(assignment));
+        });
+    };
+
+    const handleUpdateAssignment = () => {
+        updateAssignmentForCourse(assignment).then((assignment) => {
+            dispatch(updateAssignment(assignment));
+        });
+    };
+
     return (
         <div className="d-flex flex-column mx-2">
             <div >
