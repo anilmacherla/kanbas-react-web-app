@@ -1,23 +1,24 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 function EncodingParametersInURLs() {
+    const API_BASE = process.env.REACT_APP_API_BASE;
     const [a, setA] = useState(34);
     const [b, setB] = useState(23);
     const [result, setResult] = useState(0);
     const fetchSum = async (a: any, b: any) => {
         const response = await
-            axios.get(`http://localhost:4000/a5/add/${a}/${b}`);
+            axios.get(`${API_BASE}/a5/add/${a}/${b}`);
         setResult(response.data);
     };
     const fetchSubtraction = async (a: any, b: any) => {
         const response = await axios.get(
-            `http://localhost:4000/a5/subtract/${a}/${b}`);
+            `${API_BASE}/a5/subtract/${a}/${b}`);
         setResult(response.data);
     };
 
     const [welcome, setWelcome] = useState("");
     const fetchWelcome = async () => {
-        const response = await axios.get("http://localhost:4000/a5/welcome");
+        const response = await axios.get(`${API_BASE}/a5/welcome`);
         setWelcome(response.data);
     };
     useEffect(() => {
@@ -45,34 +46,34 @@ function EncodingParametersInURLs() {
             </button>
 
             <h3>Path Parameters</h3>
-            <a href={`http://localhost:4000/a5/add/${a}/${b}`} className="mx-2">
+            <a href={`${API_BASE}/a5/add/${a}/${b}`} className="mx-2">
                 Add {a} + {b}
             </a>
 
-            <a href={`http://localhost:4000/a5/subtract/${a}/${b}`} className="mx-2">
+            <a href={`${API_BASE}/a5/subtract/${a}/${b}`} className="mx-2">
                 Subtract {a} - {b}
             </a>
-            <a href={`http://localhost:4000/a5/multiply/${a}/${b}`} className="mx-2">
+            <a href={`${API_BASE}/a5/multiply/${a}/${b}`} className="mx-2">
                 Multiply {a} * {b}
             </a>
-            <a href={`http://localhost:4000/a5/divide/${a}/${b}`} className="mx-2">
+            <a href={`${API_BASE}/a5/divide/${a}/${b}`} className="mx-2">
                 Divide {b} / {a}
             </a>
             <h3>Query Parameters</h3>
             <a className="btn btn-primary mx-1"
-                href={`http://localhost:4000/a5/calculator?operation=add&a=${a}&b=${b}`}>
+                href={`${API_BASE}/a5/calculator?operation=add&a=${a}&b=${b}`}>
                 Add {a} + {b}
             </a>
             <a className="btn btn-danger mx-1"
-                href={`http://localhost:4000/a5/calculator?operation=subtract&a=${a}&b=${b}`}>
+                href={`${API_BASE}/a5/calculator?operation=subtract&a=${a}&b=${b}`}>
                 Substract {a} - {b}
             </a>
             <a className="btn btn-secondary mx-1"
-                href={`http://localhost:4000/a5/calculator?operation=multiply&a=${a}&b=${b}`}>
+                href={`${API_BASE}/a5/calculator?operation=multiply&a=${a}&b=${b}`}>
                 Multiply {a} * {b}
             </a>
             <a className="btn btn-success mx-1"
-                href={`http://localhost:4000/a5/calculator?operation=divide&a=${a}&b=${b}`}>
+                href={`${API_BASE}/a5/calculator?operation=divide&a=${a}&b=${b}`}>
                 Divide {b} / {a}
             </a>
         </div>

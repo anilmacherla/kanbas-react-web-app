@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 function WorkingWithObjects() {
+    const API_BASE = process.env.REACT_APP_API_BASE;
     const [assignment, setAssignment] = useState({
         id: 1, title: "NodeJS Assignment",
         description: "Create a NodeJS server with ExpressJS",
@@ -23,15 +24,15 @@ function WorkingWithObjects() {
     }, []);
 
 
-    const ASSIGNMENT_URL = "http://localhost:4000/a5/assignment"
-    const MODULE_URL = "http://localhost:4000/a5/module"
+    const ASSIGNMENT_URL = `${API_BASE}/a5/assignment`
+    const MODULE_URL = `${API_BASE}/a5/module`
 
     return (
         <div>
             <h3>Working With Objects</h3>
             <h4>Retrieving Objects</h4>
             <div className="btn btn-primary">
-                <a href="http://localhost:4000/a5/assignment" className="text-white text-decoration-none">
+                <a href={`${API_BASE}/a5/assignment`} className="text-white text-decoration-none">
                     Get Assignment
                 </a>
             </div>
@@ -49,7 +50,7 @@ function WorkingWithObjects() {
             </button>
 
             <div className="btn btn-primary">
-                <a href="http://localhost:4000/a5/assignment/title" className="text-white text-decoration-none">
+                <a href={`${API_BASE}/a5/assignment/title`} className="text-white text-decoration-none">
                     Get Title
                 </a>
             </div>
@@ -92,12 +93,12 @@ function WorkingWithObjects() {
 
             <h4>Retrieving Module</h4>
             <div className="btn btn-primary">
-                <a href="http://localhost:4000/a5/module" className="text-white text-decoration-none">
+                <a href={`${API_BASE}/a5/module`} className="text-white text-decoration-none">
                     Get Module
                 </a>
             </div>
             <div className="btn btn-primary mx-2">
-                <a href="http://localhost:4000/a5/module/name" className="text-white text-decoration-none">
+                <a href={`${API_BASE}/a5/module/name`} className="text-white text-decoration-none">
                     Get Module Name
                 </a>
             </div>
