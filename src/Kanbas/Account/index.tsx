@@ -7,7 +7,7 @@ export default function Account() {
     return (
         <div className="container-fluid">
             <Routes>
-                <Route path="/" element={<Navigate to="/Kanbas/Account/Signin" />} />
+                <Route path="/" element={<Navigate to="/Kanbas/Account/Profile" />} />
                 <Route path="/Admin/Users" element={<UserTable />} />
                 <Route path="/Signin" element={<Signin />} />
                 <Route path="/Signup" element={<Signup />} />

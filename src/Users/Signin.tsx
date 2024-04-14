@@ -12,6 +12,7 @@ export default function Signin() {
     const signin = async (res: any) => {
         try {
             await client.signin(credentials);
+            navigate("/Kanbas/Dashboard");
         }
         catch (err: any) {
             setError("Invalid credentials!");
@@ -21,20 +22,36 @@ export default function Signin() {
     const signup = () => {
         navigate("/Kanbas/Account/Signup");
     }
+
     return (
-        <div>
-            <h1>Signin</h1>
-            <div className="container-fluid">
-                <input className="form-control m-1" value={credentials.username} placeholder="User name" onChange={(e) =>
-                    setCredentials({ ...credentials, username: e.target.value })} />
-                <input className="form-control m-1" value={credentials.password} placeholder="Password" onChange={(e) =>
-                    setCredentials({ ...credentials, password: e.target.value })} />
-                {error && <div className="text-danger mx-2">{error}</div>}
-                <button className="btn btn-primary m-1" onClick={signin}> Sign In </button>
-                <button className="btn btn-success m-1" onClick={signup}> Sign Up </button>
+        // <div className="card d-flex justify-content-center align-items-center my-5">
+        //     <h1>Signin</h1>
+        //     <div className="container-fluid">
+        //         <input className="form-control m-1" value={credentials.username} placeholder="User name" onChange={(e) =>
+        //             setCredentials({ ...credentials, username: e.target.value })} />
+        //         <input className="form-control m-1" value={credentials.password} placeholder="Password" onChange={(e) =>
+        //             setCredentials({ ...credentials, password: e.target.value })} />
+        //         {error && <div className="text-danger mx-2">{error}</div>}
+        //         <button className="btn btn-primary m-1" onClick={signin}> Sign In </button>
+        //         <button className="btn btn-success m-1" onClick={signup}> Sign Up </button>
+        //     </div>
+        // </div>
 
+        <div className="container d-flex justify-content-center align-items-center my-5">
+            <div className="card">
+                <div className="card-body">
+                    <h1>Sign In</h1>
+                    <input className="form-control m-1" value={credentials.username} placeholder="User name" onChange={(e) =>
+                        setCredentials({ ...credentials, username: e.target.value })} />
+                    <small id="userNameHelp" className="form-text text-muted mx-2">We'll never share your details with anyone else.</small>
+                    <input className="form-control m-1" value={credentials.password} placeholder="Password" onChange={(e) =>
+                        setCredentials({ ...credentials, password: e.target.value })} />
+                    {error && <div className="alert alert-danger">{error}</div>}
+
+                    <button className="btn btn-primary m-1" onClick={signin}> Sign In </button>
+                    <button className="btn btn-success m-1" onClick={signup}> Sign Up </button>
+                </div>
             </div>
-
         </div>
     );
 }
