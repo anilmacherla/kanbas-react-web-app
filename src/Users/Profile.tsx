@@ -6,10 +6,16 @@ export default function Profile() {
         username: "", password: "",
         firstName: "", lastName: "", dob: "", email: "", role: "USER"
     });
+    const [error, setError] = useState("");
     const navigate = useNavigate();
     const fetchProfile = async () => {
-        const account = await client.profile();
-        setProfile(account);
+        try {
+            const account = await client.profile();
+            setProfile(account);
+        }
+        catch (err: any) {
+            setError(err.response.data.message);
+        }
     };
     useEffect(() => {
         fetchProfile();
@@ -17,6 +23,11 @@ export default function Profile() {
     const save = async () => {
         await client.updateUser(profile);
     };
+    const signout = async () => {
+        await client.signout();
+        navigate("/Kanbas/Account/Signin");
+    };
+
 
 
     return (
@@ -29,6 +40,8 @@ export default function Profile() {
 
             {profile && (
                 <div>
+                    {error && <div>{error}</div>}
+
                     <input className="form-control m-1" value={profile.username} onChange={(e) =>
                         setProfile({ ...profile, username: e.target.value })} />
                     <input className="form-control m-1" value={profile.password} onChange={(e) =>
@@ -50,6 +63,9 @@ export default function Profile() {
                     </select>
                     <button className="btn btn-primary m-1" onClick={save}>
                         Save
+                    </button>
+                    <button className="btn btn-danger m-1" onClick={signout}>
+                        Signout
                     </button>
 
                 </div>

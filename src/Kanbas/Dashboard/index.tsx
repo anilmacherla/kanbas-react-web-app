@@ -23,7 +23,7 @@ function Dashboard(
                 <input value={course.number} className="form-control m-2" onChange={(e) => setCourse({ ...course, number: e.target.value })} />
                 <input value={course.startDate} className="form-control m-2" type="date" onChange={(e) => setCourse({ ...course, startDate: e.target.value })} />
                 <input value={course.endDate} className="form-control m-2" type="date" onChange={(e) => setCourse({ ...course, endDate: e.target.value })} />
-                <input value={course.subText1} className="form-control m-2" onChange={(e) => setCourse({ ...course, subText1: e.target.value })} />
+                <input value={course.description} className="form-control m-2" onChange={(e) => setCourse({ ...course, description: e.target.value })} />
                 <button className="btn btn-secondary w-25 mx-2" onClick={addNewCourse} >
                     Add
                 </button>
@@ -38,7 +38,7 @@ function Dashboard(
                     {courses.map((course) => (
                         <div key={course._id} className="col" style={{ width: 300 }}>
                             <div className="card" style={{ position: "relative" }}>
-                                <img src={`/images/${course.image}`} className="card-img-top" alt="courseImage" style={{ height: 150 }} />
+                                <img src={`/images/blue.jpeg`} className="card-img-top" alt="courseImage" style={{ height: 150 }} />
                                 <div style={{ position: "absolute", top: 5, right: 5 }}>
                                     <FaEllipsisV className="text-white" />
                                 </div>
@@ -46,7 +46,9 @@ function Dashboard(
                                     <Link className="card-title" to={`/Kanbas/Courses/${course._id}/Home`}
                                         style={{ textDecoration: "none", color: "navy", fontWeight: "bold" }}>
                                         {course.name}
-                                        <p className="card-text text-muted">{course.number} <br /> <span style={{ fontSize: "smaller" }}>{course.subText1}</span> </p>
+                                        <p className="card-text text-muted">{course.number} <br />
+                                            {/* <span style={{ fontSize: "smaller" }}>{course.description}</span>  */}
+                                        </p>
                                         <button className="btn btn-success" onClick={(event) => {
                                             event.preventDefault();
                                             setCourse(course);
@@ -62,7 +64,7 @@ function Dashboard(
                                         </button>
 
                                     </Link>
-                                    <Link to={`/Kanbas/Courses/${course._id}/Home`} className="btn btn-primary">
+                                    <Link to={`/Kanbas/Courses/${course.id}/Home`} className="btn btn-primary">
                                         Go
                                     </Link>
                                 </div>

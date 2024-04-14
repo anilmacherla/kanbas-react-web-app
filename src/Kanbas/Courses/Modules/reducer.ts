@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState: any = {
     modules: [],
-    module: { _id: "0", name: "New Module 123", description: "New Description", course: "0" },
+    module: { _id: "0", id: "0", name: "New Module 123", description: "New Description", course: "0" },
 };
 
 
@@ -33,6 +33,7 @@ const modulesSlice = createSlice({
         },
         setModules: (state, action) => {
             state.modules = action.payload;
+            console.log("modules", state.modules)
         },
 
     },

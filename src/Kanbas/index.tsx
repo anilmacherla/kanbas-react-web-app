@@ -13,7 +13,6 @@ function Kanbas() {
     const API_BASE = process.env.REACT_APP_API_BASE;
 
     const [courses, setCourses] = useState<any[]>([]);
-    //const COURSES_API = "https://kanbas-node-server-app-i8wp.onrender.com/api/courses";
     const COURSES_API = `${API_BASE}/api/courses`;
     const findAllCourses = async () => {
         const response = await axios.get(COURSES_API);
@@ -24,9 +23,10 @@ function Kanbas() {
     }, []);
 
     const [course, setCourse] = useState({
-        _id: "1234", name: "New Course", number: "New Number",
-        startDate: "2023-09-10", endDate: "2023-12-15", subText1: "New SubText1", image: "blue.jpeg",
+        _id: "1234", id: "89", name: "New Course", number: "New Number",
+        startDate: "2023-09-10", endDate: "2023-12-15", description: "New description", department: "CSE", credits: "4",
     });
+
     const addNewCourse = async () => {
         const response = await axios.post(COURSES_API, course);
         setCourses([...courses, response.data]);

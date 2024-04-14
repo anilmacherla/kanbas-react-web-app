@@ -19,7 +19,7 @@ function Courses({ courses }: { courses: any[]; }) {
         return parts[parts.length - 1];
     };
     const { pathname } = useLocation();
-    const [course, setCourse] = useState<any>({ _id: "" });
+    const [course, setCourse] = useState<any>({ id: "" });
     const findCourseById = async (courseId?: string) => {
         const response = await axios.get(
             `${COURSES_API}/${courseId}`
@@ -35,7 +35,7 @@ function Courses({ courses }: { courses: any[]; }) {
             <h3 className="d-flex justify-content-between">
                 <div>
                     < HiMiniBars3 className="mx-2" />
-                    <Link className="text-decoration-none text-danger" to={`/Kanbas/Courses/${course?._id}/Home`}>Course {course?.name}</Link>
+                    <Link className="text-decoration-none text-danger" to={`/Kanbas/Courses/${courseId}/Home`}>Course {courseId}</Link>
                     {
 
                         pathname.includes("/Assignments/") ? (

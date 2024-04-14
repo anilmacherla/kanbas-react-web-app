@@ -41,6 +41,7 @@ export default function UserTable() {
     const updateUser = async () => {
         try {
             const status = await client.updateUser(user);
+            console.log("status", status)
             setUsers(users.map((u) =>
                 (u._id === user._id ? user : u)));
         } catch (err) {
