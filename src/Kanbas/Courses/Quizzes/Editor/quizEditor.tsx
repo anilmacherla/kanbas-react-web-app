@@ -21,7 +21,7 @@ const QuizEditor: React.FC = () => {
             </ul>
 
             {/* Render content based on activeTab */}
-            <div className="tab-content">
+            <div className="tab-content" style={{ width: "80%" }}>
                 {activeTab === 'details' && <DetailsComponent />}
                 {activeTab === 'questions' && <QuestionsComponent />}
             </div>
