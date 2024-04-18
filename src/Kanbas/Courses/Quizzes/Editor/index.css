@@ -1,0 +1,30 @@
+.quiz-container {
+    max-width: 100%;
+    margin: 30px auto;
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.quiz-header {
+    margin-bottom: 20px;
+}
+
+.detail-item {
+    margin-bottom: 10px;
+}
+
+.detail-item strong {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.quiz-footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.quiz-footer>div {
+    text-align: center;
+}

@@ -10,6 +10,9 @@ import Grades from "./Grades";
 import { FaGlasses } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import Quizzes from "./Quizzes";
+import QuizDetails from "./Quizzes/Editor";
+import QuizEditor from "./Quizzes/Editor/quizEditor";
 function Courses({ courses }: { courses: any[]; }) {
     const COURSES_API = "http://localhost:4000/api/courses";
 
@@ -50,7 +53,7 @@ function Courses({ courses }: { courses: any[]; }) {
 
                 </div>
                 <div>
-                    {getPageName(pathname) === "Modules" &&
+                    {(getPageName(pathname) === "Modules" || getPageName(pathname) === "Quizzes") &&
                         <button className="btn btn-secondary mt-2 mr-3 float-end">
                             <FaGlasses /> Student View</button>}
 
@@ -77,6 +80,9 @@ function Courses({ courses }: { courses: any[]; }) {
                             <Route path="Assignments/:assignmentId" element={<AssignmentEditor />} />
                             <Route path="Grades" element={<Grades />} />
                             <Route path="People" element={<h1>People</h1>} />
+                            <Route path="Quizzes" element={<Quizzes />} />
+                            <Route path="Quizzes/:quizId" element={<QuizDetails />} />
+                            <Route path="Quizzes/:quizId/QuizEditor" element={<QuizEditor />} />
                         </Routes>
                     </div>
                 </div>
