@@ -23,45 +23,39 @@ const Quizzes = () => {
             );
     }, [courseId]);
 
-    const handleAddQuiz = () => {
-        try {
-            createQuiz(courseId, { ...quiz, title: "New Title" }).then((quiz: any) => {
-                dispatch(addQuiz({ ...quiz, _id: quiz._id }));
-                dispatch(setQuiz(quiz));
-                navigate(`/Kanbas/Courses/${courseId}/Quizzes/${quiz._id}`);
-            });
-        } catch (error) {
-            console.log("Error adding quiz", error);
-        }
+    const getFormattedDate = (dateToChange: string) => {
+        const date = new Date(dateToChange);
 
-    };
+        // Extract the parts of the date
+        const month = date.toLocaleString('default', { month: 'short' });
+        const day = date.getDate();
+        const hour = date.getHours();
+        const minute = date.getMinutes();
 
+        // Format the date string
+        const formattedDateString = `${month} ${day < 10 ? '0' + day : day} at ${hour < 10 ? '0' + hour : hour}:${minute < 10 ? '0' + minute : minute}`;
+
+        return formattedDateString;
+    }
     const handleDeleteQuiz = (_id: any) => {
         deleteQuizByID(_id).then((status) => {
             dispatch(deleteQuiz(_id));
         });
     }
 
-    const handlePublishQuiz = async (_id: any) => {
-        const updatedQuiz = { ...quiz, published: !quiz.published, _id: _id };
-        dispatch(setQuiz(updatedQuiz));
-        const status = await updateQuizByID(updatedQuiz, _id);
-        if (status) {
-            dispatch(setQuizzes(updatedQuiz));
-        }
+    const handlePublishQuiz = async (_id: any, value: any) => {
+        const updatedQuiz = { ...quiz, published: value, _id: _id, course: courseId };
+        await updateQuizByID(updatedQuiz, _id).then((status: any) => {
+            console.log("inside publishquiz after await", status)
+            dispatch(updateQuiz(updatedQuiz));
+        });
 
     }
 
-    function handleUnpublishQuiz(_id: any) {
-        // Handle unpublish quiz functionality
-    }
-
-    function handleCopyQuiz(_id: any) {
-        // Handle copy quiz functionality
-    }
-
-    function handleSortQuizzes(_id: any) {
-        // Handle sorting quizzes functionality
+    function handleEditQuiz(_id: any) {
+        console.log("inside handle Edit Quiz", _id);
+        dispatch(setQuiz(quizzes.find((q: any) => q._id === _id)));
+        navigate(`/Kanbas/Courses/${courseId}/Quizzes/${_id}/QuizEditor`);
     }
 
     function getAvailabilityStatus(quiz: any) {
@@ -78,16 +72,55 @@ const Quizzes = () => {
         }
     }
 
+    const handleAddQuiz = () => {
+        const newQuiz = {
+            _id: "0",
+            title: "New Sample Quiz",
+            course: courseId,
+            isAvailable: false,
+            availableDate: getFormattedDate(new Date().toISOString()),
+            availableUntilDate: getFormattedDate(new Date().toISOString()),
+            dueDate: getFormattedDate(new Date().toISOString()),
+            points: 0,
+            questionsCount: 0,
+            published: false,
+            quizType: "Graded Quiz",
+            assignmentGroup: "Quizzes",
+            accessCode: "",
+            instructions: "",
+            options: {
+                oneQAtATime: true,
+                requireWebCam: false,
+                lockAnswersAfterFinalSubmission: false,
+                showCorrectAnswers: false,
+                whenCorrectAnswer: "Immediately",
+                shuffleAnswers: true,
+                doesHaveTimer: false,
+                timeLimit: 20,
+                allowMultipleAttempts: false,
+            },
+            queAndAns: [{
+                question: "",
+                answers: [],
+                correctAnswerIndex: null
+            }]
+        };
+        dispatch(setQuiz(newQuiz));
+        navigate(`/Kanbas/Courses/${courseId}/Quizzes/QuizEditor`);
+    }
+
     return (
         <>
             <div style={{ display: "flex", justifyContent: "space-between" }}>
                 <input type="text" className="mx-2 w-25 btn-rad" placeholder="Search for Quiz" />
                 <div>
-                    <Link
-                        to={`/Kanbas/Courses/${courseId}/Quizzes/QuizDetails`}>
-                        <button className="btn btn-danger btn-md btn-rad " style={{ borderRadius: "0.2rem" }} onClick={handleAddQuiz}><FaPlus />
+                    {/* <Link
+                        to={`/Kanbas/Courses/${courseId}/Quizzes/QuizEditor`}>
+                        <button className="btn btn-danger btn-md btn-rad " style={{ borderRadius: "0.2rem" }} ><FaPlus />
                             Quiz</button>
-                    </Link>
+                    </Link> */}
+                    <button className="btn btn-danger btn-md btn-rad " onClick={handleAddQuiz} style={{ borderRadius: "0.2rem" }} ><FaPlus />
+                        Quiz</button>
 
                     <button className="btn btn-secondary btn-md btn-rad btn-grey-button m-1" style={{ borderRadius: "0.2rem" }}><FaEllipsisV /></button>
                 </div>
@@ -109,8 +142,8 @@ const Quizzes = () => {
                             </li>
                         ) : (
                             quizzes
-                                .filter((q: any) => q.course === courseId)
-                                .map((a: any) => (
+                                ?.filter((q: any) => q.course === courseId)
+                                ?.map((a: any) => (
                                     <li key={a._id} className="list-group-item assignment-list-item">
                                         <div className="d-flex align-items-center justify-content-between py-1">
                                             <div>
@@ -134,7 +167,7 @@ const Quizzes = () => {
                                                 {a.published
                                                     ? <FaCheckCircle className="text-success" />
                                                     : <button style={{ backgroundColor: "white" }}>
-                                                        <FaBan className="text-danger" onClick={() => handlePublishQuiz(a._id)} />
+                                                        <FaBan className="text-danger" onClick={() => handlePublishQuiz(a._id, !a.published)} />
                                                     </button>
                                                 }
                                                 <button className="mb-1 btn " onClick={() => toggleContextMenu(a._id)}>
@@ -142,9 +175,9 @@ const Quizzes = () => {
                                                 </button>
                                                 {openContextId === a._id && (
                                                     <div className="dropdown-menu show">
-                                                        <button className="dropdown-item" onClick={() => handleDeleteQuiz(a._id)}>Edit</button>
+                                                        <button className="dropdown-item" onClick={() => handleEditQuiz(a._id)}>Edit</button>
                                                         <button className="dropdown-item" onClick={() => handleDeleteQuiz(a._id)}>Delete</button>
-                                                        <button className="dropdown-item" onClick={() => handlePublishQuiz(a._id)}>{a.published ? 'Unpublish' : 'Publish'}</button>
+                                                        <button className="dropdown-item" onClick={() => handlePublishQuiz(a._id, !a.published)}>{a.published ? 'Unpublish' : 'Publish'}</button>
                                                     </div>
                                                 )}
                                             </div>

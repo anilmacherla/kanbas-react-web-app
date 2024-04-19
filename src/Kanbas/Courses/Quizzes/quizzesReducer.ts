@@ -27,7 +27,27 @@ const initialState: any = {
         dueDate: getFormattedDate(new Date().toISOString()),
         points: 0,
         questionsCount: 0,
-        published: false
+        published: false,
+        quizType: "Graded Quiz",
+        assignmentGroup: "Quizzes",
+        accessCode: "",
+        instructions: "",
+        options: {
+            oneQAtATime: true,
+            requireWebCam: false,
+            lockAnswersAfterFinalSubmission: false,
+            showCorrectAnswers: false,
+            whenCorrectAnswer: "Immediately",
+            shuffleAnswers: true,
+            doesHaveTimer: false,
+            timeLimit: 20,
+            allowMultipleAttempts: false,
+        },
+        queAndAns: [{
+            question: "",
+            answers: [],
+            correctAnswerIndex: null
+        }]
     },
 };
 
@@ -35,9 +55,7 @@ const quizzesSlice = createSlice({
     name: "quizzes",
     initialState,
     reducers: {
-
         addQuiz: (state, action) => {
-            console.log("in action payload for addQuiz", action.payload)
             state.quizzes = [action.payload, ...state.quizzes];
         },
         deleteQuiz: (state, action) => {
@@ -62,7 +80,6 @@ const quizzesSlice = createSlice({
         },
         setQuizzes: (state, action) => {
             state.quizzes = action.payload;
-            console.log("quizzes", state.quizzes)
         },
 
     },

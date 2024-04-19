@@ -82,7 +82,7 @@ function Courses({ courses }: { courses: any[]; }) {
                             <Route path="People" element={<h1>People</h1>} />
                             <Route path="Quizzes" element={<Quizzes />} />
                             <Route path="Quizzes/:quizId" element={<QuizDetails />} />
-                            <Route path="Quizzes/:quizId/QuizEditor" element={<QuizEditor />} />
+                            <Route path="Quizzes/:quizId?/QuizEditor" element={<QuizEditor />} />
                         </Routes>
                     </div>
                 </div>

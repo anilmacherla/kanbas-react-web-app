@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import DetailsComponent from './detailsComponent';
 import QuestionsComponent from './questionsComponent';
+import { useSelector } from 'react-redux';
+import { KanbasState } from '../../../store';
 
 const QuizEditor: React.FC = () => {
     const [activeTab, setActiveTab] = useState<string>('details');
