@@ -77,7 +77,6 @@ function ModuleList() {
                         </button>
                     </div>
                 </div>
-
             </div>
             <ul className="list-group wd-modules rounded-0">
                 <li className="list-group-item">
@@ -92,14 +91,12 @@ function ModuleList() {
                                         onChange={(e) => dispatch(setModule({ ...module, description: e.target.value }))}
                                     />
                                 </div>
-
                             </div>
                             <div className="col">
                                 <button className="btn btn-success m-1 btn-sm float-end" onClick={handleAddModule}>Add</button>
                                 <button className="btn btn-primary m-1 btn-sm float-end" onClick={handleUpdateModule}>
                                     Update
                                 </button>
-
                             </div>
                         </div>
 

@@ -44,9 +44,12 @@ const initialState: any = {
             allowMultipleAttempts: false,
         },
         queAndAns: [{
-            question: "",
-            answers: [],
-            correctAnswerIndex: null
+            questionTitle: "",
+        questionContent: "",
+        answers: [],
+        questionType: "",
+        blanks: [],
+        points: ""
         }]
     },
 };

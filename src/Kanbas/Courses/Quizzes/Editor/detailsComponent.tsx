@@ -29,16 +29,14 @@ const DetailsComponent = () => {
                 navigate(`/Kanbas/Courses/${courseId}/Quizzes/${quiz._id}`);
             });
         }
-
     }
 
     const handleSaveAndPublish = async () => {
-        const updatedQuizDetails = { ...quizDetails, published: true }; // Ensure published is set to true
+        const updatedQuizDetails = { ...quizDetails, published: true }; 
         await dispatch(setQuiz(updatedQuizDetails));
         await handleSaveQuiz();
-        dispatch(uq(updatedQuizDetails));
+        dispatch(updatedQuizDetails);
         navigate(`/Kanbas/Courses/${courseId}/Quizzes/${quizDetails._id}`);
-        // Create a new quiz
         console.log("quizDetails after publish", updatedQuizDetails);
     }
 

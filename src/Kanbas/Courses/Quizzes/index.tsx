@@ -102,7 +102,8 @@ const Quizzes = () => {
             queAndAns: [{
                 question: "",
                 answers: [],
-                correctAnswerIndex: null
+                questionType: "",
+                correctAnswer: "",
             }]
         };
         dispatch(setQuiz(newQuiz));

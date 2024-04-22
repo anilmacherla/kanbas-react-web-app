@@ -9,6 +9,14 @@ export const findQuizzesForCourse = async (courseId: any) => {
     return response.data;
 };
 
+export const findParticularQuizForCourse = async (courseId: any, quizId: any)=>{
+    console.log("Inside findParticularQuizForCourse")
+
+    const response = await axios
+        .get(`${QUIZZES_API}/${quizId}`);
+    return response.data;
+}
+
 export const createQuiz = async (courseId: any, module: any) => {
     const response = await axios.post(
         `${COURSES_API}/${courseId}/quizzes`,
