@@ -13,6 +13,7 @@ import axios from "axios";
 import Quizzes from "./Quizzes";
 import QuizDetails from "./Quizzes/Editor";
 import QuizEditor from "./Quizzes/Editor/quizEditor";
+import QuizPreview from "./Quizzes/Editor/quizPreview";
 function Courses({ courses }: { courses: any[]; }) {
     const COURSES_API = "http://localhost:4000/api/courses";
 
@@ -83,6 +84,7 @@ function Courses({ courses }: { courses: any[]; }) {
                             <Route path="Quizzes" element={<Quizzes />} />
                             <Route path="Quizzes/:quizId" element={<QuizDetails />} />
                             <Route path="Quizzes/:quizId?/QuizEditor" element={<QuizEditor />} />
+                            <Route path="Quizzes/:quizId?/Preview" element={<QuizPreview/>}/>
                         </Routes>
                     </div>
                 </div>

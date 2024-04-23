@@ -32,7 +32,7 @@ const QuizDetails = () => {
 
     const handleOnPreviewClick = () => {
         // Handle preview quiz functionality
-        navigate(`/Kanbas/Courses/${courseId}/Quizzes/${quizId}/QuizEditor`);
+        navigate(`/Kanbas/Courses/${courseId}/Quizzes/${quizId}/Preview`);
     }
 
     const handleOnEditClick = () => {

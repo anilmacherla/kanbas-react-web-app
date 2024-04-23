@@ -30,7 +30,7 @@ const QuestionsComponent = () => {
     const navigate = useNavigate();
     const quizDetails = useSelector((state: KanbasState) => state.quizzesReducer.quiz);
     const [showQuestions, setShowQuestions] = useState(false);
-    const [quizOne, setquizOne]=useState('')
+    
 
     useEffect(()=>{
         findParticularQuizForCourse(courseId, quizId).then((quiz)=>  dispatch(setQuiz(quiz)));
@@ -114,20 +114,31 @@ const QuestionsComponent = () => {
         }
         // setShowQuestions(true);
     }
+
+    const handleCancel = ()=>{
+        setSelectedQuestionType("Select Question Type");
+        setShowForm(false);
+    }
+
+    const removeHtmlTags = (html:any) => {
+        const regex = /(<([^>]+)>)/ig;
+        return html.replace(regex, '');
+    };
     
 
-    const handleFetchQuiz = async () =>{
-        // const quizOne = await findParticularQuizForCourse(courseId, quizId);
-        //setquizOne(quizOne);
-        //console.log(setquizOne);
+    // const handleFetchQuiz = async () =>{
+    //     // const quizOne = await findParticularQuizForCourse(courseId, quizId);
+    //     //setquizOne(quizOne);
+    //     //console.log(setquizOne);
     
-    }
+    // }
 
     const handleSaveQuestion = async () => {
         // Save the current question to the quizQuestions array
         const newQuestion: QuizQuestion = { questionTitle, questionContent, questionType: selectedQuestionType, points, answers, blanks, };
         setQuizQuestions([...quizQuestions, newQuestion]);
         console.log("Temp List", quizQuestions)
+        handleCancel();
     };
 
     const handleQuestionTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -139,16 +150,6 @@ const QuestionsComponent = () => {
     return (
         <div>
             <h1>Quiz Questions</h1>
-            quizQuestions && (
-            <>
-                {quizQuestions.map(q => (
-                    <div >
-                        <p>Title: {q.questionTitle}</p>
-                        <p>Content: {q.questionContent}</p>
-                    </div>
-                ))}
-            </>
-            )
             <div className=''>
                 <div className='container'>
                     {showForm && (
@@ -266,9 +267,14 @@ const QuestionsComponent = () => {
                     )}
 
                     <div className='d-flex mt-4' style={{ justifyContent: "center" }}>
+                    {showForm && (<>
+                        <button className="btn btn-light border-secondary ms-2 float-end" onClick={handleCancel}>
+                            Cancel
+                        </button>
                         <button className="btn btn-danger border-secondary ms-2" onClick={handleSaveQuestion}>
                             Save Question
-                        </button>
+                        </button></>
+                    )}
                         <button className="btn btn-light border-secondary ms-2 float-end" onClick={() => setShowForm(true)}>
                             <FaPlus /> New Question
                         </button>
@@ -286,12 +292,14 @@ const QuestionsComponent = () => {
                         {quizQuestions.map((question, index) => (
                             <div key={index}>
                                 <h3>Question {index + 1}</h3>
-                                <p>Title: {question.questionTitle}</p>
-                                <p>Content: {question.questionContent}</p>
-                                <p>Points: {question.points}</p>
+                                <div className="d-flex justify-content-between align-items-center"> {/* Use flexbox to align items horizontally and space between them */}
+                                    <span style={{ fontWeight: 'bold' }}>Title: {question.questionTitle}</span> {/* Use span to group the title */}
+                                    <span style={{ fontWeight: 'bold' }}>Points: {question.points}</span> {/* Use span to group the points */}
+                                </div>
+                                <div>Question: {removeHtmlTags(question.questionContent)}</div>
                                 {question.questionType === "Multiple Choice" && (
                                     <div>
-                                        <h5>Answers:</h5>
+                                        <h5>Options:</h5>
                                         {question.answers.map((answer, answerIndex) => (
                                             <div key={answerIndex}>
                                                 <input
@@ -300,14 +308,14 @@ const QuestionsComponent = () => {
                                                     name={`question-${index}-answers`}
                                                     value={answer}
                                                 />
-                                                <label htmlFor={`question-${index}-answer-${answerIndex}`}>{answer}</label>
+                                                <label htmlFor={`question-${index}-answer-${answerIndex}`} style={{ marginLeft: '10px' }}> { answer}</label>
                                             </div>
                                         ))}
                                     </div>
                                 )}
                                 {question.questionType === "True/False" && (
                                     <div>
-                                        <h5>Answers:</h5>
+                                        <h5>Options:</h5>
                                         <div>
                                             <input
                                                 type="radio"
@@ -315,7 +323,7 @@ const QuestionsComponent = () => {
                                                 name={`question-${index}-answers`}
                                                 value="true"
                                             />
-                                            <label htmlFor={`question-${index}-answer-true`}>True</label>
+                                            <label htmlFor={`question-${index}-answer-true`} style={{ marginLeft: '10px' }}>True</label>
                                         </div>
                                         <div>
                                             <input
@@ -324,15 +332,23 @@ const QuestionsComponent = () => {
                                                 name={`question-${index}-answers`}
                                                 value="false"
                                             />
-                                            <label htmlFor={`question-${index}-answer-false`}>False</label>
+                                            <label htmlFor={`question-${index}-answer-false`} style={{ marginLeft: '10px' }}>False</label>
                                         </div>
                                     </div>
                                 )}
                                 {question.questionType === "Fill in the Blank" && (
                                     <div>
-                                        <h5>Blanks:</h5>
+                                        <h5>Options:</h5>
                                         {question.blanks.map((blank, blankIndex) => (
-                                            <p key={blankIndex}>{blank}</p>
+                                            <div key={blankIndex}>
+                                                <input
+                                                    type="radio"
+                                                    id={`question-${index}-blank-${blankIndex}`}
+                                                    name={`question-${index}-blanks`}
+                                                    value={blank}
+                                                />
+                                                <label htmlFor={`question-${index}-blank-${blankIndex}`} style={{ marginLeft: '10px' }}>{blank}</label>
+                                            </div>
                                         ))}
                                     </div>
                                 )}
