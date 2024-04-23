@@ -22,9 +22,9 @@ const initialState: any = {
         title: "New Title",
         course: "",
         isAvailable: false,
-        availableDate: getFormattedDate(new Date().toISOString()),
-        availableUntilDate: getFormattedDate(new Date().toISOString()),
-        dueDate: getFormattedDate(new Date().toISOString()),
+        availableFromDate: '',
+        availableUntilDate: '',
+        dueDate: '',
         points: 0,
         questionsCount: 0,
         published: false,
@@ -45,11 +45,11 @@ const initialState: any = {
         },
         queAndAns: [{
             questionTitle: "",
-        questionContent: "",
-        answers: [],
-        questionType: "",
-        blanks: [],
-        points: ""
+            questionContent: "",
+            answers: [],
+            questionType: "",
+            blanks: [],
+            points: ""
         }]
     },
 };

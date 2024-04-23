@@ -30,11 +30,11 @@ const QuestionsComponent = () => {
     const navigate = useNavigate();
     const quizDetails = useSelector((state: KanbasState) => state.quizzesReducer.quiz);
     const [showQuestions, setShowQuestions] = useState(false);
-    
 
-    useEffect(()=>{
-        findParticularQuizForCourse(courseId, quizId).then((quiz)=>  dispatch(setQuiz(quiz)));
-    },[quizId])
+
+    useEffect(() => {
+        findParticularQuizForCourse(courseId, quizId).then((quiz) => dispatch(setQuiz(quiz)));
+    }, [quizId])
 
     const handleAnswerChange = (index: number, event: React.ChangeEvent<HTMLInputElement>) => {
         const newAnswers = [...answers];
@@ -88,7 +88,7 @@ const QuestionsComponent = () => {
                 dispatch(setQuiz(quiz));
                 dispatch(uq(quiz));
                 navigate(`/Kanbas/Courses/${courseId}/Quizzes/${quiz._id}`);
-                
+
             });
         } else {
             await createQuiz(courseId, quizDetails).then((quiz: any) => {
@@ -115,22 +115,22 @@ const QuestionsComponent = () => {
         // setShowQuestions(true);
     }
 
-    const handleCancel = ()=>{
+    const handleCancel = () => {
         setSelectedQuestionType("Select Question Type");
         setShowForm(false);
     }
 
-    const removeHtmlTags = (html:any) => {
+    const removeHtmlTags = (html: any) => {
         const regex = /(<([^>]+)>)/ig;
         return html.replace(regex, '');
     };
-    
+
 
     // const handleFetchQuiz = async () =>{
     //     // const quizOne = await findParticularQuizForCourse(courseId, quizId);
     //     //setquizOne(quizOne);
     //     //console.log(setquizOne);
-    
+
     // }
 
     const handleSaveQuestion = async () => {
@@ -172,7 +172,7 @@ const QuestionsComponent = () => {
                                 </div>
                                 <br />
                             </div>
-                            <hr/>
+                            <hr />
                         </form>
                     )}
                     {selectedQuestionType === "Fill in the Blank" && (
@@ -267,14 +267,14 @@ const QuestionsComponent = () => {
                     )}
 
                     <div className='d-flex mt-4' style={{ justifyContent: "center" }}>
-                    {showForm && (<>
-                        <button className="btn btn-light border-secondary ms-2 float-end" onClick={handleCancel}>
-                            Cancel
-                        </button>
-                        <button className="btn btn-danger border-secondary ms-2" onClick={handleSaveQuestion}>
-                            Save Question
-                        </button></>
-                    )}
+                        {showForm && (<>
+                            <button className="btn btn-light border-secondary ms-2 float-end" onClick={handleCancel}>
+                                Cancel
+                            </button>
+                            <button className="btn btn-danger border-secondary ms-2" onClick={handleSaveQuestion}>
+                                Save Question
+                            </button></>
+                        )}
                         <button className="btn btn-light border-secondary ms-2 float-end" onClick={() => setShowForm(true)}>
                             <FaPlus /> New Question
                         </button>
@@ -288,74 +288,74 @@ const QuestionsComponent = () => {
                     <br />
                     <hr />
                     <div>
-                    <>
-                        {quizQuestions.map((question, index) => (
-                            <div key={index}>
-                                <h3>Question {index + 1}</h3>
-                                <div className="d-flex justify-content-between align-items-center"> {/* Use flexbox to align items horizontally and space between them */}
-                                    <span style={{ fontWeight: 'bold' }}>Title: {question.questionTitle}</span> {/* Use span to group the title */}
-                                    <span style={{ fontWeight: 'bold' }}>Points: {question.points}</span> {/* Use span to group the points */}
-                                </div>
-                                <div>Question: {removeHtmlTags(question.questionContent)}</div>
-                                {question.questionType === "Multiple Choice" && (
-                                    <div>
-                                        <h5>Options:</h5>
-                                        {question.answers.map((answer, answerIndex) => (
-                                            <div key={answerIndex}>
+                        <>
+                            {quizQuestions.map((question, index) => (
+                                <div key={index}>
+                                    <h3>Question {index + 1}</h3>
+                                    <div className="d-flex justify-content-between align-items-center"> {/* Use flexbox to align items horizontally and space between them */}
+                                        <span style={{ fontWeight: 'bold' }}>Title: {question.questionTitle}</span> {/* Use span to group the title */}
+                                        <span style={{ fontWeight: 'bold' }}>Points: {question.points}</span> {/* Use span to group the points */}
+                                    </div>
+                                    <div>Question: {removeHtmlTags(question.questionContent)}</div>
+                                    {question.questionType === "Multiple Choice" && (
+                                        <div>
+                                            <h5>Options:</h5>
+                                            {question.answers.map((answer, answerIndex) => (
+                                                <div key={answerIndex}>
+                                                    <input
+                                                        type="radio"
+                                                        id={`question-${index}-answer-${answerIndex}`}
+                                                        name={`question-${index}-answers`}
+                                                        value={answer}
+                                                    />
+                                                    <label htmlFor={`question-${index}-answer-${answerIndex}`} style={{ marginLeft: '10px' }}> {answer}</label>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+                                    {question.questionType === "True/False" && (
+                                        <div>
+                                            <h5>Options:</h5>
+                                            <div>
                                                 <input
                                                     type="radio"
-                                                    id={`question-${index}-answer-${answerIndex}`}
+                                                    id={`question-${index}-answer-true`}
                                                     name={`question-${index}-answers`}
-                                                    value={answer}
+                                                    value="true"
                                                 />
-                                                <label htmlFor={`question-${index}-answer-${answerIndex}`} style={{ marginLeft: '10px' }}> { answer}</label>
+                                                <label htmlFor={`question-${index}-answer-true`} style={{ marginLeft: '10px' }}>True</label>
                                             </div>
-                                        ))}
-                                    </div>
-                                )}
-                                {question.questionType === "True/False" && (
-                                    <div>
-                                        <h5>Options:</h5>
-                                        <div>
-                                            <input
-                                                type="radio"
-                                                id={`question-${index}-answer-true`}
-                                                name={`question-${index}-answers`}
-                                                value="true"
-                                            />
-                                            <label htmlFor={`question-${index}-answer-true`} style={{ marginLeft: '10px' }}>True</label>
-                                        </div>
-                                        <div>
-                                            <input
-                                                type="radio"
-                                                id={`question-${index}-answer-false`}
-                                                name={`question-${index}-answers`}
-                                                value="false"
-                                            />
-                                            <label htmlFor={`question-${index}-answer-false`} style={{ marginLeft: '10px' }}>False</label>
-                                        </div>
-                                    </div>
-                                )}
-                                {question.questionType === "Fill in the Blank" && (
-                                    <div>
-                                        <h5>Options:</h5>
-                                        {question.blanks.map((blank, blankIndex) => (
-                                            <div key={blankIndex}>
+                                            <div>
                                                 <input
                                                     type="radio"
-                                                    id={`question-${index}-blank-${blankIndex}`}
-                                                    name={`question-${index}-blanks`}
-                                                    value={blank}
+                                                    id={`question-${index}-answer-false`}
+                                                    name={`question-${index}-answers`}
+                                                    value="false"
                                                 />
-                                                <label htmlFor={`question-${index}-blank-${blankIndex}`} style={{ marginLeft: '10px' }}>{blank}</label>
+                                                <label htmlFor={`question-${index}-answer-false`} style={{ marginLeft: '10px' }}>False</label>
                                             </div>
-                                        ))}
-                                    </div>
-                                )}
-                                <hr />
-                            </div>
-                        ))}
-                    </>
+                                        </div>
+                                    )}
+                                    {question.questionType === "Fill in the Blank" && (
+                                        <div>
+                                            <h5>Options:</h5>
+                                            {question.blanks.map((blank, blankIndex) => (
+                                                <div key={blankIndex}>
+                                                    <input
+                                                        type="radio"
+                                                        id={`question-${index}-blank-${blankIndex}`}
+                                                        name={`question-${index}-blanks`}
+                                                        value={blank}
+                                                    />
+                                                    <label htmlFor={`question-${index}-blank-${blankIndex}`} style={{ marginLeft: '10px' }}>{blank}</label>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+                                    <hr />
+                                </div>
+                            ))}
+                        </>
 
                     </div>
                     <div className='m-2'>
@@ -369,7 +369,7 @@ const QuestionsComponent = () => {
                         <button className="btn btn-light border-secondary ms-2 float-end" onClick={handleSaveAndPublish}>
                             Save and Publish
                         </button>
-                        <button className="btn btn-light border-secondary ms-2 float-end" onClick={() => setShowForm(false)}>
+                        <button className="btn btn-light border-secondary ms-2 float-end" onClick={() => { setShowForm(false); navigate(`/Kanbas/Courses/${courseId}/Quizzes/${quizId}`); }}>
                             Cancel
                         </button>
                     </div>

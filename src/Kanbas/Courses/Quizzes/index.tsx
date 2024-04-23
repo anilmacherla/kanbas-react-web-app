@@ -11,6 +11,8 @@ const Quizzes = () => {
     const dispatch = useDispatch();
     const quizzes = useSelector((state: any) => state.quizzesReducer.quizzes);
     const quiz = useSelector((state: any) => state.quizzesReducer.quiz);
+    const [totalPoints, setTotalPoints] = useState(0);
+
     const toggleContextMenu = (_id: any) => {
         setOpenContextId(_id === openContextId ? null : _id);
     };
@@ -18,8 +20,10 @@ const Quizzes = () => {
     useEffect(() => {
         // fetch quizzes for the course
         findQuizzesForCourse(courseId)
-            .then((q) =>
-                dispatch(setQuizzes(q))
+            .then((q) => {
+                dispatch(setQuizzes(q));
+
+            }
             );
     }, [courseId]);
 
@@ -60,27 +64,30 @@ const Quizzes = () => {
 
     function getAvailabilityStatus(quiz: any) {
         const currentDate = new Date();
-        const availableDate = new Date(quiz.availableDate);
-        const availableUntilDate = new Date(quiz.availableUntilDate);
+        const availableDate = quiz.availableDate;
+        const availableUntilDate = quiz.availableUntilDate;
 
         if (currentDate > availableUntilDate) {
             return "Closed";
-        } else if (currentDate >= availableDate && currentDate <= availableUntilDate) {
-            return "Available";
         } else if (currentDate < availableDate) {
             return "Not available until " + quiz.availableDate;
         }
+
+        else if (currentDate >= availableDate && currentDate <= availableUntilDate) {
+            return "Available";
+        }
     }
 
-    const handleAddQuiz = () => {
+
+
+    const handleAddQuiz = async () => {
         const newQuiz = {
-            _id: "0",
             title: "New Sample Quiz",
             course: courseId,
             isAvailable: false,
-            availableDate: getFormattedDate(new Date().toISOString()),
-            availableUntilDate: getFormattedDate(new Date().toISOString()),
-            dueDate: getFormattedDate(new Date().toISOString()),
+            availableDate: '',
+            availableUntilDate: '',
+            dueDate: '',
             points: 0,
             questionsCount: 0,
             published: false,
@@ -106,8 +113,12 @@ const Quizzes = () => {
                 correctAnswer: "",
             }]
         };
-        dispatch(setQuiz(newQuiz));
-        navigate(`/Kanbas/Courses/${courseId}/Quizzes/QuizEditor`);
+        await createQuiz(courseId, newQuiz).then((quiz) => {
+            dispatch(setQuiz(quiz));
+            addQuiz(quiz);
+            navigate(`/Kanbas/Courses/${courseId}/Quizzes/${quiz._id}/QuizEditor`);
+        });
+
     }
 
     return (

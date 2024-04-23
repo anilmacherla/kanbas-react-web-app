@@ -7,7 +7,8 @@ import { KanbasState } from '../../../store';
 const QuizEditor: React.FC = () => {
     const [activeTab, setActiveTab] = useState<string>('details');
 
-    const handleTabChange = (tab: string) => {
+    const handleTabChange = (tab: string, event: React.MouseEvent<HTMLAnchorElement>) => {
+        event.preventDefault(); // Prevent default behavior of anchor element
         setActiveTab(tab);
     };
 
@@ -15,10 +16,10 @@ const QuizEditor: React.FC = () => {
         <div>
             <ul className="nav nav-tabs">
                 <li className="nav-item">
-                    <a className={`nav-link ${activeTab === 'details' ? 'active' : ''}`} onClick={() => handleTabChange('details')}>Details</a>
+                    <a href="#" className={`nav-link ${activeTab === 'details' ? 'active' : ''}`} onClick={(e) => handleTabChange('details', e)}>Details</a>
                 </li>
                 <li className="nav-item">
-                    <a className={`nav-link ${activeTab === 'questions' ? 'active' : ''}`} onClick={() => handleTabChange('questions')}>Questions</a>
+                    <a href="#" className={`nav-link ${activeTab === 'questions' ? 'active' : ''}`} onClick={(e) => handleTabChange('questions', e)}>Questions</a>
                 </li>
             </ul>
 

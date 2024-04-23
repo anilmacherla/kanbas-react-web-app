@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { addQuiz, setQuiz, updateQuiz } from '../quizzesReducer'
-import { createQuiz, updateQuiz as uq } from '../quizzesService';
+import { createQuiz, findParticularQuizForCourse, updateQuiz as uq } from '../quizzesService';
 import { useNavigate, useParams } from 'react-router';
 import { KanbasState } from '../../../store';
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,6 +11,9 @@ const QuizDetails = () => {
     const { courseId, quizId } = useParams();
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
+    const [totalPoints, setTotalPoints] = useState(0);
+
 
     const handlePublishQuiz = async () => {
         console.log("In Publish");
@@ -30,6 +33,26 @@ const QuizDetails = () => {
 
     }
 
+    const formatDate = (dateString: any) => {
+        console.log("date", dateString);
+        const [year, month, day] = dateString.split('-');
+        const date = new Date(year, month - 1, day); // Month is 0-indexed in Date constructor
+        return date.toLocaleDateString('en-US', {
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric',
+        });
+    };
+
+    const formatTime = (dateString: any) => {
+        const date = new Date(dateString);
+        return date.toLocaleTimeString('en-US', {
+            hour: 'numeric',
+            minute: 'numeric',
+            hour12: true,
+        });
+    };
+
     const handleOnPreviewClick = () => {
         // Handle preview quiz functionality
         navigate(`/Kanbas/Courses/${courseId}/Quizzes/${quizId}/Preview`);
@@ -40,23 +63,43 @@ const QuizDetails = () => {
         navigate(`/Kanbas/Courses/${courseId}/Quizzes/${quizId}/QuizEditor`);
     }
 
+    useEffect(() => {
+        const fetchQuizDetails = async () => {
+            try {
+                const quiz = await findParticularQuizForCourse(courseId, quizId);
+                dispatch(setQuiz(quiz));
+                if (quiz.queAndAns) {
+                    // Calculate total points
+                    const pointsArray = quiz.queAndAns.map((question: any) => parseFloat(question.points) || 0);
+                    const total = pointsArray.reduce((acc: any, cur: any) => acc + cur, 0);
+                    setTotalPoints(total);
+                }
+            } catch (error) {
+                console.error('Error fetching quiz details:', error);
+            }
+        };
+
+    }, [courseId, quizId, dispatch]);
+
     const quiz = useSelector((state: KanbasState) =>
         state.quizzesReducer.quiz);
 
+
     const quizSettings = {
-        "Quiz Type": "Graded Quiz",
-        "Points": quiz.points,
-        "Assignment Group": "QUIZZES",
-        "Shuffle Answers": "No",
-        "Time Limit": "30 Minutes",
-        "Multiple Attempts": "No",
-        "View Responses": "Always",
-        "One Question at a Time": "Yes",
+        "Quiz Type": quiz.quizType,
+        "Points": totalPoints,
+        "Assignment Group": quiz.assignmentGroup,
+        "Shuffle Answers": quiz.shuffleAnswers ? "Yes" : "No",
+        "Time Limit": quiz.options?.timeLimit,
+        "Multiple Attempts": quiz.options.allowMultipleAttempts ? "Yes" : "No",
+        "View Responses": quiz.options.showCorrectAnswers ? "Yes" : "No",
+        "One Question at a Time": quiz.options.oneQAtATime ? "Yes" : "No",
         "Require Respondus LockDown Browser": "No",
         "Required to View Quiz Results": "No",
-        "Webcam Required": "No",
-        "Lock Questions After Answering": "No",
+        "Webcam Required": quiz.options.requireWebCam ? "Yes" : "No",
+        "Lock Questions After Answering": quiz.options.lockAnswersAfterFinalSubmission ? "Yes" : "No",
     };
+
 
     return (
         <div>
@@ -101,10 +144,10 @@ const QuizDetails = () => {
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td className='text-start'>{quiz.dueDate}</td>
+                                        <td className='text-start'>{quiz.dueDate != '' ? `${formatDate(quiz.dueDate)} at ${formatTime(quiz.dueDate)}` : ''}</td>
                                         <td className='text-start'>Everyone</td>
-                                        <td className='text-start'>{quiz.availableDate}</td>
-                                        <td className='text-start'>{quiz.availableUntilDate}</td>
+                                        <td className='text-start'>{quiz.availableFromDate != '' ? `${formatDate(quiz.availableFromDate)} at ${formatTime(quiz.availableFromDate)}` : ''}</td>
+                                        <td className='text-start'>{quiz.availableUntilDate != '' ? `${formatDate(quiz.availableUntilDate)} at ${formatTime(quiz.availableUntilDate)}` : ''}</td>
                                     </tr>
                                 </tbody>
                             </table>

@@ -1,42 +1,56 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { KanbasState } from '../../../store';
 import { addQuiz, setQuiz, updateQuiz as uq } from '../quizzesReducer';
-import { createQuiz, updateQuiz } from '../quizzesService';
+import { createQuiz, findParticularQuizForCourse, updateQuiz } from '../quizzesService';
 import { FaPlus, FaSearch } from 'react-icons/fa';
 
 const DetailsComponent = () => {
     const { courseId } = useParams();
+    const { quizId } = useParams();
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const quizDetails = useSelector((state: KanbasState) => state.quizzesReducer.quiz);
 
+    useEffect(() => {
+        const fetchQuizDetails = async () => {
+            try {
+                const quiz = await findParticularQuizForCourse(courseId, quizId);
+                dispatch(setQuiz(quiz));
+            } catch (error) {
+                console.error('Error fetching quiz details:', error);
+            }
+        };
+
+        fetchQuizDetails();
+    }, [courseId, quizId, dispatch]);
+
     const handleSaveQuiz = async () => {
-        console.log("ID", quizDetails._id);
         if (quizDetails._id !== "0") {
             await updateQuiz(quizDetails, quizDetails._id).then((quiz: any) => {
-                dispatch(setQuiz(quiz));
-                dispatch(uq(quiz));
-                navigate(`/Kanbas/Courses/${courseId}/Quizzes/${quiz._id}`);
+                dispatch(uq(quizDetails));
+                dispatch(setQuiz(quizDetails));
+                navigate(`/Kanbas/Courses/${courseId}/Quizzes/${quizDetails._id}`);
             });
         } else {
             await createQuiz(courseId, quizDetails).then((quiz: any) => {
-                dispatch(addQuiz({ ...quiz, _id: quiz._id }));
+                dispatch(addQuiz({ ...quizDetails, _id: quiz._id }));
                 dispatch(setQuiz(quiz));
-                navigate(`/Kanbas/Courses/${courseId}/Quizzes/${quiz._id}`);
+                navigate(`/Kanbas/Courses/${courseId}/Quizzes/${quizDetails._id}`);
             });
         }
     }
 
     const handleSaveAndPublish = async () => {
-        const updatedQuizDetails = { ...quizDetails, published: true }; 
-        await dispatch(setQuiz(updatedQuizDetails));
-        await handleSaveQuiz();
-        dispatch(updatedQuizDetails);
-        navigate(`/Kanbas/Courses/${courseId}/Quizzes/${quizDetails._id}`);
+        const updatedQuizDetails = { ...quizDetails, published: true };
+        await updateQuiz(updatedQuizDetails, quizDetails._id).then((quiz: any) => {
+            dispatch(uq(updatedQuizDetails));
+            dispatch(setQuiz(updatedQuizDetails));
+            navigate(`/Kanbas/Courses/${courseId}/Quizzes/${quizDetails._id}`);
+        });
         console.log("quizDetails after publish", updatedQuizDetails);
     }
 
@@ -157,7 +171,7 @@ const DetailsComponent = () => {
                         </label> <br />
                         <label>
                             Correct Answers are displayed at:
-                            <input type="text" className="w-25 form-control" value={quizDetails.options?.whenCorrectAnswer}
+                            <input type="text" className="w-50 form-control" value={quizDetails.options?.whenCorrectAnswer}
                                 onChange={(e) => dispatch(setQuiz({
                                     ...quizDetails, options: {
                                         ...quizDetails.options,
@@ -224,8 +238,15 @@ const DetailsComponent = () => {
                             <div className="flex">
                                 <div style={{ fontWeight: "bold" }}>Due</div>
                                 <input
-                                    value={quizDetails?.dueDate?.split("T")[0]} // Extract date part
-                                    onChange={(e) => dispatch(setQuiz({ ...quizDetails, dueDate: e.target.value }))}
+                                    value={quizDetails?.dueDate} // Extract date part
+                                    onChange={(e) =>
+                                        dispatch(
+                                            setQuiz({
+                                                ...quizDetails,
+                                                dueDate: e.target.value,
+                                            })
+                                        )
+                                    }
                                     type="date"
                                     className="form-control w-100 border-black"
                                 />
@@ -235,13 +256,30 @@ const DetailsComponent = () => {
                                 <div className="row mt-2">
                                     <div className="col-6">
                                         <div style={{ fontWeight: "bold" }}>Available from</div>
-                                        <input type="date" value={quizDetails?.availableFrom?.split("T")[0]} onChange={() => { }} className="form-control w-100 border-black" >
-
-                                        </input>
+                                        <input
+                                            className="form-control w-75"
+                                            type="date"
+                                            value={quizDetails?.availableFromDate}
+                                            onChange={(e) =>
+                                                dispatch(
+                                                    setQuiz({
+                                                        ...quizDetails,
+                                                        availableFromDate: e.target.value,
+                                                    })
+                                                )
+                                            }
+                                        />
                                     </div>
                                     <div className="col-6">
                                         <div style={{ fontWeight: "bold" }}>Until</div>
-                                        <input type="date" value={quizDetails?.untilDate?.toLocaleString()} onChange={(e) => { }} className="form-control w-100 border-black" />
+                                        <input type="date" value={quizDetails?.availableUntilDate} onChange={(e) =>
+                                            dispatch(
+                                                setQuiz({
+                                                    ...quizDetails,
+                                                    availableUntilDate: e.target.value,
+                                                })
+                                            )
+                                        } className="form-control w-100 border-black" />
                                     </div>
                                 </div>
                             </div>
