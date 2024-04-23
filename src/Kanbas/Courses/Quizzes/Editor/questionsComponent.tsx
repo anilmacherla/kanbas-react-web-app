@@ -342,12 +342,12 @@ const QuestionsComponent = () => {
                                         {question.blanks.map((blank, blankIndex) => (
                                             <div key={blankIndex}>
                                                 <input
-                                                    type="radio"
+                                                    type="text"
                                                     id={`question-${index}-blank-${blankIndex}`}
                                                     name={`question-${index}-blanks`}
-                                                    value={blank}
+                                                    defaultValue={blank} // Assign the value of the blank option to the input field
+                                                    style={{ marginRight: '10px', marginBottom: '5px' }} // Add some spacing between input fields
                                                 />
-                                                <label htmlFor={`question-${index}-blank-${blankIndex}`} style={{ marginLeft: '10px' }}>{blank}</label>
                                             </div>
                                         ))}
                                     </div>

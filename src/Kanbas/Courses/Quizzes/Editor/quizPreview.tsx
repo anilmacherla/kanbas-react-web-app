@@ -1,30 +1,20 @@
-import React, {useEffect, useMemo, useState} from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router";
 import { findParticularQuizForCourse } from "../quizzesService";
 import { KanbasState } from "../../../store";
 import { useDispatch, useSelector } from "react-redux";
 import { setQuiz } from "../quizzesReducer";
 
-
-
-const QuizPreview=()=>{
-    const {courseId,quizId}=useParams();
-    const quizDetails = useSelector((state: KanbasState) => state.quizzesReducer.quiz);
+const QuizPreview = () => {
+    const { courseId, quizId } = useParams();
+    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const dispatch = useDispatch();
-    // useEffect(() => {
-    //     const fetchQuiz = async () => {
-    //         console.log("inside preview function");
-    //         const quizDetails = await findParticularQuizForCourse(courseId, quizId);
-    //         dispatch(setQuiz(quizDetails));
-    //         console.log(quizDetails);
-    //     };
-    //     fetchQuiz();
-    // }, [courseId, quizId]); 
+
     const memoizedFindQuiz = useMemo(() => {
         return findParticularQuizForCourse(courseId, quizId);
     }, [courseId, quizId]);
 
-    const removeHtmlTags = (html:any) => {
+    const removeHtmlTags = (html: string) => {
         const regex = /(<([^>]+)>)/ig;
         return html.replace(regex, '');
     };
@@ -33,79 +23,101 @@ const QuizPreview=()=>{
         memoizedFindQuiz.then((quiz) => dispatch(setQuiz(quiz)));
     }, [memoizedFindQuiz, dispatch]);
 
-    return(
+    const quizDetails = useSelector((state: KanbasState) => state.quizzesReducer.quiz);
+
+    const handleNextQuestion = () => {
+        if (currentQuestionIndex < quizDetails.queAndAns.length - 1) {
+            setCurrentQuestionIndex(currentQuestionIndex + 1);
+        }
+    };
+
+    const handlePrevQuestion = () => {
+        if (currentQuestionIndex > 0) {
+            setCurrentQuestionIndex(currentQuestionIndex - 1);
+        }
+    };
+
+    return (
         <div>
-            <h3>Quiz Preview</h3>
-            <>{console.log(quizDetails.queAndAns)}</>
-            <>
-            {quizDetails.queAndAns.map((question:any, index:any) => (
-                            <div key={index} style={{ border: '1px solid black', padding: '5px', marginBottom: '5px' }}>
-                                <h3>Question {index + 1}</h3>
-                                <hr style={{ marginBottom: '5px', border: '1px solid black' }} />
-                                <div className="d-flex justify-content-between align-items-center"> {/* Use flexbox to align items horizontally and space between them */}
-                                    <span style={{ fontWeight: 'bold' }}>Title: {question.questionTitle}</span> {/* Use span to group the title */}
-                                    <span style={{ fontWeight: 'bold' }}>Points: {question.points}</span> {/* Use span to group the points */}
-                                </div>
-                                <div>Question: {removeHtmlTags(question.questionContent)}</div>
-                                {question.questionType === "Multiple Choice" && (
-                                    <div>
-                                        <h5>Options:</h5>
-                                        {question.answers.map((answer:any, answerIndex:any) => (
-                                            <div key={answerIndex}>
-                                                <input
-                                                    type="radio"
-                                                    id={`question-${index}-answer-${answerIndex}`}
-                                                    name={`question-${index}-answers`}
-                                                    value={answer}
-                                                />
-                                                <label htmlFor={`question-${index}-answer-${answerIndex}`} style={{ marginLeft: '10px' }}> { answer}</label>
-                                            </div>
-                                        ))}
+            <h3>Quiz Instructions</h3>
+            {quizDetails?.queAndAns && (
+                <div key={currentQuestionIndex} className="card" style={{ border: '1px solid black', width: '80%', marginBottom: '10px' }}>
+                    <div className="card-header">
+                        <h3>Question {currentQuestionIndex + 1}</h3>
+                    </div>
+                    <div className="card-body">
+                        <div className="card-title" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <span style={{ fontWeight: 'bold' }}>Title: {quizDetails.queAndAns[currentQuestionIndex].questionTitle}</span>
+                            <span style={{ fontWeight: 'bold' }}>Points: {quizDetails.queAndAns[currentQuestionIndex].points}</span>
+                        </div>
+                        <div><h4>Question: {removeHtmlTags(quizDetails.queAndAns[currentQuestionIndex].questionContent)}</h4></div>
+                        {quizDetails.queAndAns[currentQuestionIndex].questionType === "Multiple Choice" && (
+                            <div>
+                                <h5>Options:</h5>
+                                {quizDetails.queAndAns[currentQuestionIndex].answers.map((answer: any, answerIndex: any) => (
+                                    <div key={answerIndex}>
+                                        <input
+                                            type="radio"
+                                            id={`question-${currentQuestionIndex}-answer-${answerIndex}`}
+                                            name={`question-${currentQuestionIndex}-answers`}
+                                            value={answer}
+                                        />
+                                        <label htmlFor={`question-${currentQuestionIndex}-answer-${answerIndex}`} style={{ marginLeft: '10px' }}> {answer}</label>
+                                        <hr style={{ margin: '5px 0', border: '1px solid black' }} />
                                     </div>
-                                )}
-                                {question.questionType === "True/False" && (
-                                    <div>
-                                        <h5>Options:</h5>
-                                        <div>
-                                            <input
-                                                type="radio"
-                                                id={`question-${index}-answer-true`}
-                                                name={`question-${index}-answers`}
-                                                value="true"
-                                            />
-                                            <label htmlFor={`question-${index}-answer-true`} style={{ marginLeft: '10px' }}>True</label>
-                                        </div>
-                                        <div>
-                                            <input
-                                                type="radio"
-                                                id={`question-${index}-answer-false`}
-                                                name={`question-${index}-answers`}
-                                                value="false"
-                                            />
-                                            <label htmlFor={`question-${index}-answer-false`} style={{ marginLeft: '10px' }}>False</label>
-                                        </div>
-                                    </div>
-                                )}
-                                {question.questionType === "Fill in the Blank" && (
-                                    <div>
-                                        <h5>Options:</h5>
-                                        {question.blanks.map((blank:any, blankIndex:any) => (
-                                            <div key={blankIndex}>
-                                                <input
-                                                    type="radio"
-                                                    id={`question-${index}-blank-${blankIndex}`}
-                                                    name={`question-${index}-blanks`}
-                                                    value={blank}
-                                                />
-                                                <label htmlFor={`question-${index}-blank-${blankIndex}`} style={{ marginLeft: '10px' }}>{blank}</label>
-                                            </div>
-                                        ))}
-                                    </div>
-                                )}
+                                ))}
                             </div>
-                        ))}</>
+                        )}
+                        {quizDetails.queAndAns[currentQuestionIndex].questionType === "True/False" && (
+                            <div>
+                                <h5>Options:</h5>
+                                <div>
+                                    <input
+                                        type="radio"
+                                        id={`question-${currentQuestionIndex}-answer-true`}
+                                        name={`question-${currentQuestionIndex}-answers`}
+                                        value="true"
+                                    />
+                                    <label htmlFor={`question-${currentQuestionIndex}-answer-true`} style={{ marginLeft: '10px' }}>True</label>
+                                    <hr style={{ margin: '5px 0', border: '1px solid black' }} />
+                                </div>
+                                <div>
+                                    <input
+                                        type="radio"
+                                        id={`question-${currentQuestionIndex}-answer-false`}
+                                        name={`question-${currentQuestionIndex}-answers`}
+                                        value="false"
+                                    />
+                                    <label htmlFor={`question-${currentQuestionIndex}-answer-false`} style={{ marginLeft: '10px' }}>False</label>
+                                    <hr style={{ margin: '5px 0', border: '1px solid black' }} />
+                                </div>
+                            </div>
+                        )}
+                        {quizDetails.queAndAns[currentQuestionIndex].questionType === "Fill in the Blank" && (
+                            <div>
+                                <h5>Options:</h5>
+                                {quizDetails.queAndAns[currentQuestionIndex].blanks.map((blank: any, blankIndex: any) => (
+                                    <div key={blankIndex}>
+                                        <input
+                                            type="text"
+                                            id={`question-${currentQuestionIndex}-blank-${blankIndex}`}
+                                            name={`question-${currentQuestionIndex}-blanks`}
+                                            style={{ marginRight: '10px' }} // Add some spacing between input fields
+                                        />
+                                        <hr style={{ margin: '5px 0', border: '1px solid black' }} />
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                </div>
+            )}
+            <div style={{ display: 'flex', justifyContent: 'space-between',width:'80%', alignItems: 'center' }}>
+                <button className="btn btn-primary" onClick={handlePrevQuestion} disabled={currentQuestionIndex === 0}>Previous</button>
+                <button className="btn btn-danger" onClick={handleNextQuestion} disabled={currentQuestionIndex === quizDetails.queAndAns.length - 1}>Next</button>
+            </div>
         </div>
     );
-
 };
+
 export default QuizPreview;
