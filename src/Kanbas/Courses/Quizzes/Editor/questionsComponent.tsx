@@ -69,50 +69,36 @@ const QuestionsComponent = () => {
     };
 
     const handleSaveAndPublish = async () => {
-        // Save and publish the quiz
-        const newQuizDetails = {
-            ...quizDetails,
-            courseId: courseId,
-            published: true,
-            queAndAns: quizQuestions.map((question) => ({
-                questionTitle: question.questionTitle,
-                questionContent: question.questionContent,
-                answers: question.answers,
-                questionType: question.questionType,
-                blanks: question.blanks,
-                points: question.points
-            }))
-        };
-        if (quizDetails._id !== 0) {
-            await updateQuiz(newQuizDetails, quizDetails._id).then((quiz: any) => {
-                dispatch(setQuiz(quiz));
-                dispatch(uq(quiz));
-                navigate(`/Kanbas/Courses/${courseId}/Quizzes/${quiz._id}`);
-
-            });
-        } else {
-            await createQuiz(courseId, quizDetails).then((quiz: any) => {
-                dispatch(addQuiz({ ...quiz, _id: quiz._id }));
-                dispatch(setQuiz(quiz));
-                navigate(`/Kanbas/Courses/${courseId}/Quizzes/${quiz._id}`);
-                //setShowQuestions(true);
-            });
+        const { queAndAns } = quizDetails;
+        const updatedList = [...queAndAns, ...quizQuestions];
+        const updatedQuiz = { ...quizDetails, queAndAns: updatedList, published:true };
+        console.log("updated quiz", updatedQuiz)
+        try {
+            await updateQuiz(updatedQuiz, quizId).then(()=>{
+                dispatch(uq(updatedQuiz));
+                dispatch(setQuiz(updatedQuiz));
+                navigate(`/Kanbas/Courses/${courseId}/Quizzes/${quizId}`);
+            })
+            
+        } catch (error) {
+            console.error("Error updating quiz:", error);
         }
     };
 
     const handleSave = async () => {
         const { queAndAns } = quizDetails;
         const updatedList = [...queAndAns, ...quizQuestions];
-        const updatedQuiz = { ...quizDetails, queAndAns: updatedList };
+        const updatedQuiz = { ...quizDetails, queAndAns: updatedList};
         try {
-            const quiz = await updateQuiz(updatedQuiz, quizId);
-            dispatch(uq(quiz));
-            dispatch(setQuiz(updatedQuiz));
-            navigate(`/Kanbas/Courses/${courseId}/Quizzes/${quizId}`);
+            await updateQuiz(updatedQuiz, quizId).then(()=>{
+                dispatch(uq(updatedQuiz));
+                dispatch(setQuiz(updatedQuiz));
+                navigate(`/Kanbas/Courses/${courseId}/Quizzes/${quizId}`);
+            })
+            
         } catch (error) {
             console.error("Error updating quiz:", error);
         }
-        // setShowQuestions(true);
     }
 
     const handleCancel = () => {

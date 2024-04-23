@@ -35,7 +35,7 @@ const QuizDetails = () => {
 
     const formatDate = (dateString: any) => {
         console.log("date", dateString);
-        const [year, month, day] = dateString.split('-');
+        const [year, month, day] = dateString?.split('-');
         const date = new Date(year, month - 1, day); // Month is 0-indexed in Date constructor
         return date.toLocaleDateString('en-US', {
             month: 'short',
@@ -144,9 +144,9 @@ const QuizDetails = () => {
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td className='text-start'>{quiz.dueDate != '' ? `${formatDate(quiz.dueDate)} at ${formatTime(quiz.dueDate)}` : ''}</td>
+                                        <td className='text-start'>{quiz?.dueDate != '' ? `${formatDate(quiz.dueDate)} at ${formatTime(quiz.dueDate)}` : ''}</td>
                                         <td className='text-start'>Everyone</td>
-                                        <td className='text-start'>{quiz.availableFromDate != '' ? `${formatDate(quiz.availableFromDate)} at ${formatTime(quiz.availableFromDate)}` : ''}</td>
+                                        <td className='text-start'>{quiz?.availableFromDate != '' ? `${formatDate(quiz.availableFromDate)} at ${formatTime(quiz.availableFromDate)}` : ''}</td>
                                         <td className='text-start'>{quiz.availableUntilDate != '' ? `${formatDate(quiz.availableUntilDate)} at ${formatTime(quiz.availableUntilDate)}` : ''}</td>
                                     </tr>
                                 </tbody>
