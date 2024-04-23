@@ -61,7 +61,7 @@ function Kanbas() {
                 <KanbasNavigation />
                 <div style={{ flexGrow: 1 }} className="content">
                     <Routes>
-                        {/* <Route path="/" element={<Navigate to="Dashboard" />} /> */}
+                        <Route path="/" element={<Navigate to="Account/Signin" />} />
                         <Route path="Account/*" element={<Account />} />
                         <Route path="Dashboard" element={<Dashboard
                             courses={courses}

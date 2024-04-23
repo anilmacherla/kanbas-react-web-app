@@ -53,7 +53,6 @@ const Quizzes = () => {
         const currentDate = new Date();
         const availableDate = new Date(quiz.availableFromDate);
         const availableUntilDate = new Date(quiz.availableUntilDate);
-        console.log("currentDate", currentDate, "availableDate", availableDate, "availableUntilDate", availableUntilDate)
         if (currentDate > availableUntilDate) {
             return "Closed";
         } else if (currentDate < availableDate) {
