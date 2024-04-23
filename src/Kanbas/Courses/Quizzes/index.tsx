@@ -4,6 +4,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addQuiz, deleteQuiz, setQuizzes, setQuiz, updateQuiz } from './quizzesReducer';
 import { createQuiz, deleteQuiz as deleteQuizByID, updateQuiz as updateQuizByID, findQuizzesForCourse } from './quizzesService';
+import { current } from '@reduxjs/toolkit';
 const Quizzes = () => {
     const { courseId } = useParams();
     const navigate = useNavigate();
@@ -11,7 +12,6 @@ const Quizzes = () => {
     const dispatch = useDispatch();
     const quizzes = useSelector((state: any) => state.quizzesReducer.quizzes);
     const quiz = useSelector((state: any) => state.quizzesReducer.quiz);
-    const [totalPoints, setTotalPoints] = useState(0);
 
     const toggleContextMenu = (_id: any) => {
         setOpenContextId(_id === openContextId ? null : _id);
@@ -27,20 +27,7 @@ const Quizzes = () => {
             );
     }, [courseId]);
 
-    const getFormattedDate = (dateToChange: string) => {
-        const date = new Date(dateToChange);
 
-        // Extract the parts of the date
-        const month = date.toLocaleString('default', { month: 'short' });
-        const day = date.getDate();
-        const hour = date.getHours();
-        const minute = date.getMinutes();
-
-        // Format the date string
-        const formattedDateString = `${month} ${day < 10 ? '0' + day : day} at ${hour < 10 ? '0' + hour : hour}:${minute < 10 ? '0' + minute : minute}`;
-
-        return formattedDateString;
-    }
     const handleDeleteQuiz = (_id: any) => {
         deleteQuizByID(_id).then((status) => {
             dispatch(deleteQuiz(_id));
@@ -62,11 +49,11 @@ const Quizzes = () => {
         navigate(`/Kanbas/Courses/${courseId}/Quizzes/${_id}/QuizEditor`);
     }
 
-    function getAvailabilityStatus(quiz: any) {
+    const getAvailabilityStatus = (quiz: any) => {
         const currentDate = new Date();
-        const availableDate = quiz.availableDate;
-        const availableUntilDate = quiz.availableUntilDate;
-
+        const availableDate = new Date(quiz.availableFromDate);
+        const availableUntilDate = new Date(quiz.availableUntilDate);
+        console.log("currentDate", currentDate, "availableDate", availableDate, "availableUntilDate", availableUntilDate)
         if (currentDate > availableUntilDate) {
             return "Closed";
         } else if (currentDate < availableDate) {
@@ -77,6 +64,26 @@ const Quizzes = () => {
             return "Available";
         }
     }
+
+    const formatDate = (dateString: any) => {
+        console.log("date", dateString);
+        const [year, month, day] = dateString.split('-');
+        const date = new Date(year, month - 1, day); // Month is 0-indexed in Date constructor
+        return date.toLocaleDateString('en-US', {
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric',
+        });
+    };
+
+    const formatTime = (dateString: any) => {
+        const date = new Date(dateString);
+        return date.toLocaleTimeString('en-US', {
+            hour: 'numeric',
+            minute: 'numeric',
+            hour12: true,
+        });
+    };
 
 
 
@@ -126,11 +133,7 @@ const Quizzes = () => {
             <div style={{ display: "flex", justifyContent: "space-between" }}>
                 <input type="text" className="mx-2 w-25 btn-rad" placeholder="Search for Quiz" />
                 <div>
-                    {/* <Link
-                        to={`/Kanbas/Courses/${courseId}/Quizzes/QuizEditor`}>
-                        <button className="btn btn-danger btn-md btn-rad " style={{ borderRadius: "0.2rem" }} ><FaPlus />
-                            Quiz</button>
-                    </Link> */}
+
                     <button className="btn btn-danger btn-md btn-rad " onClick={handleAddQuiz} style={{ borderRadius: "0.2rem" }} ><FaPlus />
                         Quiz</button>
 
@@ -171,7 +174,7 @@ const Quizzes = () => {
                                                 </Link>
                                                 <div className="mx-4 px-2" style={{ fontSize: "small" }}>
                                                     <div className='text-muted'>
-                                                        {getAvailabilityStatus(a)} | Due {a.dueDate} | {a.points} points | {a.questionsCount} Questions
+                                                        {getAvailabilityStatus(a)} | Due {quiz.dueDate != '' ? `${formatDate(quiz.dueDate)} at ${formatTime(quiz.dueDate)}` : new Date().toDateString()} | {a.queAndAns.map((question: any) => parseFloat(question.points) || 0)} points | {a.queAndAns.map((question: any) => parseFloat(question.question) || 0)} Questions
                                                     </div>
                                                 </div>
                                             </div>
@@ -205,7 +208,5 @@ const Quizzes = () => {
 };
 
 export default Quizzes;
-function getTodayDate(): String {
-    throw new Error('Function not implemented.');
-}
+
 

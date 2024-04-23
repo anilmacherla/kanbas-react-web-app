@@ -87,7 +87,7 @@ const QuizDetails = () => {
 
     const quizSettings = {
         "Quiz Type": quiz.quizType,
-        "Points": totalPoints,
+        "Points": quiz.queAndAns?.map((question: any) => parseFloat(question.points) || 0),
         "Assignment Group": quiz.assignmentGroup,
         "Shuffle Answers": quiz.shuffleAnswers ? "Yes" : "No",
         "Time Limit": quiz.options?.timeLimit,
