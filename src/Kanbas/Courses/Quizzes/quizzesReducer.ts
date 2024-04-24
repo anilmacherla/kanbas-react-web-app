@@ -43,14 +43,8 @@ const initialState: any = {
             timeLimit: 20,
             allowMultipleAttempts: false,
         },
-        queAndAns: [{
-            questionTitle: "",
-            questionContent: "",
-            answers: [],
-            questionType: "",
-            blanks: [],
-            points: ""
-        }]
+        queAndAns: [
+        ]
     },
 };
 

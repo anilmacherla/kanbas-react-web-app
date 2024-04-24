@@ -41,7 +41,16 @@ const QuizPreview = () => {
         <div>
             <h3>Quiz Instructions</h3>
             {console.log(quizDetails?.queAndAns)}
-            {quizDetails?.queAndAns && (
+{
+   quizDetails.queAndAns.length ==0 && (<>
+    <li className="list-group-item assignment-list-item">
+                                <div className="d-flex align-items-center justify-content-center py-1">
+                                    No quiz questions available. Please add questions and try again.
+                                </div>
+                            </li>
+   </>)
+}
+            {quizDetails.queAndAns.length >0 && quizDetails?.queAndAns && (
                 <div key={currentQuestionIndex} className="card" style={{ border: '1px solid black', width: '80%', marginBottom: '10px' }}>
                     <div className="card-header">
                         <h3>Question {currentQuestionIndex + 1}</h3>
@@ -111,12 +120,14 @@ const QuizPreview = () => {
                             </div>
                         )}
                     </div>
-                </div>
-            )}
-            <div style={{ display: 'flex', justifyContent: 'space-between', width: '80%', alignItems: 'center' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', width: '90%', alignItems: 'center' }} className="m-5">
                 <button className="btn btn-primary" onClick={handlePrevQuestion} disabled={currentQuestionIndex === 0}>Previous</button>
                 <button className="btn btn-danger" onClick={handleNextQuestion} disabled={currentQuestionIndex === quizDetails.queAndAns.length - 1}>Next</button>
             </div>
+                </div>
+            )}
+           
+            
         </div>
     );
 };

@@ -95,12 +95,9 @@ const QuestionsComponent = () => {
 
     const handleSave = async () => {
         const { queAndAns } = quizDetails;
-        console.log("que and ans",queAndAns, ", length: ", queAndAns.length);
-
         const updatedList = queAndAns.length >1 ? [...queAndAns, ...quizQuestions] : [...quizQuestions];
-        console.log("updatedList",updatedList, ", quizQuestions: ",quizQuestions);
-        
         const updatedQuiz = { ...quizDetails, queAndAns: updatedList};
+        console.log(queAndAns)
         try {
             await updateQuiz(updatedQuiz, quizId).then(()=>{
                 dispatch(uq(updatedQuiz));
