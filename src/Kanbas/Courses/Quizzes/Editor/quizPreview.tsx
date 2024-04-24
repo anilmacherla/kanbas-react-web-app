@@ -7,7 +7,7 @@ import { setQuiz } from "../quizzesReducer";
 
 const QuizPreview = () => {
     const { courseId, quizId } = useParams();
-    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(1);
     const dispatch = useDispatch();
 
     const memoizedFindQuiz = useMemo(() => {
@@ -53,7 +53,7 @@ const QuizPreview = () => {
             {quizDetails.queAndAns.length >0 && quizDetails?.queAndAns && (
                 <div key={currentQuestionIndex} className="card" style={{ border: '1px solid black', width: '80%', marginBottom: '10px' }}>
                     <div className="card-header">
-                        <h3>Question {currentQuestionIndex + 1}</h3>
+                        <h3>Question {currentQuestionIndex}</h3>
                     </div>
                     <div className="card-body">
                         <div className="card-title" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -121,7 +121,7 @@ const QuizPreview = () => {
                         )}
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', width: '90%', alignItems: 'center' }} className="m-5">
-                <button className="btn btn-primary" onClick={handlePrevQuestion} disabled={currentQuestionIndex === 0}>Previous</button>
+                <button className="btn btn-primary" onClick={handlePrevQuestion} disabled={currentQuestionIndex === 1}>Previous</button>
                 <button className="btn btn-danger" onClick={handleNextQuestion} disabled={currentQuestionIndex === quizDetails.queAndAns.length - 1}>Next</button>
             </div>
                 </div>
