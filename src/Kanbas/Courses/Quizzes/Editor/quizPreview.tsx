@@ -40,6 +40,7 @@ const QuizPreview = () => {
     return (
         <div>
             <h3>Quiz Instructions</h3>
+            {console.log(quizDetails?.queAndAns)}
             {quizDetails?.queAndAns && (
                 <div key={currentQuestionIndex} className="card" style={{ border: '1px solid black', width: '80%', marginBottom: '10px' }}>
                     <div className="card-header">

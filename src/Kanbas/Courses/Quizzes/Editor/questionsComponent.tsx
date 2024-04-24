@@ -68,6 +68,14 @@ const QuestionsComponent = () => {
         setBlanks(newBlanks);
     };
 
+    const setDefaultBlanks =() =>{
+        setQuestionTitle('');
+        setQuestionContent('');
+        setPoints('');
+        setBlanks(['']);
+        setAnswers(['']);
+    }
+
     const handleSaveAndPublish = async () => {
         const { queAndAns } = quizDetails;
         const updatedList = [...queAndAns, ...quizQuestions];
@@ -87,7 +95,11 @@ const QuestionsComponent = () => {
 
     const handleSave = async () => {
         const { queAndAns } = quizDetails;
-        const updatedList = [...queAndAns, ...quizQuestions];
+        console.log("que and ans",queAndAns, ", length: ", queAndAns.length);
+
+        const updatedList = queAndAns.length >1 ? [...queAndAns, ...quizQuestions] : [...quizQuestions];
+        console.log("updatedList",updatedList, ", quizQuestions: ",quizQuestions);
+        
         const updatedQuiz = { ...quizDetails, queAndAns: updatedList};
         try {
             await updateQuiz(updatedQuiz, quizId).then(()=>{
@@ -120,10 +132,9 @@ const QuestionsComponent = () => {
     // }
 
     const handleSaveQuestion = async () => {
-        // Save the current question to the quizQuestions array
         const newQuestion: QuizQuestion = { questionTitle, questionContent, questionType: selectedQuestionType, points, answers, blanks, };
-        setQuizQuestions([...quizQuestions, newQuestion]);
-        console.log("Temp List", quizQuestions)
+        quizQuestions.length>0 ? 
+        setQuizQuestions([...quizQuestions, newQuestion]): setQuizQuestions([newQuestion]);
         handleCancel();
     };
 
@@ -131,6 +142,7 @@ const QuestionsComponent = () => {
         setSelectedQuestionType(event.target.value);
         setAnswers([]);
         setBlanks([]);
+
     };
 
     return (
@@ -145,7 +157,7 @@ const QuestionsComponent = () => {
                                     <input type='text' className='form-control' style={{ width: "100%" }} placeholder='Question Title' value={questionTitle} onChange={(e) => setQuestionTitle(e.target.value)} />
                                 </div>
                                 <div className='col-6'>
-                                    <select className='form-control  w-50' onChange={handleQuestionTypeChange}>
+                                    <select className='form-control  w-50' onChange={handleQuestionTypeChange} value={selectedQuestionType}>
                                         <option value="">Select Question Type</option>
                                         <option value="Multiple Choice">Multiple Choice</option>
                                         <option value="True/False">True/False</option>
@@ -251,17 +263,20 @@ const QuestionsComponent = () => {
                             <button className='btn btn-light border-dark mx-3 mt-2' type="button" onClick={addNewAnswer}>Add Another Answer</button>
                         </div>
                     )}
-
-                    <div className='d-flex mt-4' style={{ justifyContent: "center" }}>
-                        {showForm && (<>
-                            <button className="btn btn-light border-secondary ms-2 float-end" onClick={handleCancel}>
+<>{showForm && (<div className='m-2'>
+                            <button className="btn btn-light border-secondary ms-2 " onClick={handleCancel}>
                                 Cancel
                             </button>
                             <button className="btn btn-danger border-secondary ms-2" onClick={handleSaveQuestion}>
                                 Save Question
-                            </button></>
+                            </button></div>
+                            
                         )}
-                        <button className="btn btn-light border-secondary ms-2 float-end" onClick={() => setShowForm(true)}>
+</>
+                    <div className='d-flex mt-4' style={{ justifyContent: "center" }}>
+                        
+                        <br/>
+                        <button className="btn btn-light border-secondary ms-2 float-end" onClick={() => {setShowForm(true); setSelectedQuestionType('Multiple Choice'); setDefaultBlanks()}}>
                             <FaPlus /> New Question
                         </button>
                         <button className="btn btn-light border-secondary ms-2 float-end">
